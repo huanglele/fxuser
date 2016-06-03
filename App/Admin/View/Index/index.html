@@ -1,0 +1,50 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        我的信息
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" action="<{:U('pwd')}>" method="post" style="margin: 30px auto;">
+            <div class="row">
+                <div class="col-xs-5 col-sm-offset-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">　用户名</div>
+                            <input type="text" value="<{$info.name}>" class="form-control"  disabled="disabled" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-offset-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">　　角色</div>
+                            <input type="text" value="<{$AdminRole[$info['role']]}>" class="form-control"  disabled="disabled" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-offset-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">添加时间</div>
+                            <input type="text" value="<{$info.time|date='Y-m-d H:i',###}>" class="form-control"  disabled="disabled" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-offset-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">负责地区</div>
+                            <input type="text" value="<{$info.place}>" class="form-control"  disabled="disabled" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
