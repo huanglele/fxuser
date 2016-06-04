@@ -5,6 +5,7 @@ use Think\Controller;
 
 class CommonController extends Controller
 {
+    private $role = null;
     public function _initialize(){
         header("Content-type:text/html;charset=utf-8");
         $acFuns = array('login','register','bindwechat','bindwechatpost');
@@ -20,6 +21,7 @@ class CommonController extends Controller
             }else{
                 $this->aid = $aid;
                 $this->role = session('role');
+                $this->checkRole();
                 $this->assign('role',$this->role);
             }
         }
@@ -27,6 +29,19 @@ class CommonController extends Controller
 
     public function _empty(){
         $this->index();
+    }
+
+    /**
+     * 判断操作权限
+     */
+    private function checkRole(){
+        if($this->role == 2){
+            $accessController = array('index','order');
+            $c = strtolower(CONTROLLER_NAME);
+            if(!in_array($c,$accessController)){
+                $this->error('没有操作权限');die;
+            }
+        }
     }
 
 

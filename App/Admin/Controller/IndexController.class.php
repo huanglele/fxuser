@@ -11,11 +11,11 @@ class IndexController extends CommonController {
         if($info['role']==1){
             $info['place'] = '全部地区';
         }else{
-            $city = json_decode($info['city'],true);
-            if(empty($city)){
-                $info['place'] = '';
+            $CityCode = C('CityCode');
+            if(in_array($info['city'],$CityCode)){
+                $info['place'] = $CityCode[$info['city']];
             }else{
-
+                $info['place'] = '';
             }
         }
         $this->assign('info',$info);

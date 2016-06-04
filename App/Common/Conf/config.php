@@ -14,6 +14,9 @@ return array(
     'TMPL_L_DELIM' => '<{',
     'TMPL_R_DELIM' => '}>',
 
+    //加载city文件
+    'LOAD_EXT_CONFIG' => 'city',
+
     //上传配置
     'UploadConfig' => array(
         'maxSize'       =>  0, //上传的文件大小限制 (0-不做限制)

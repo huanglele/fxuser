@@ -59,17 +59,18 @@
                         <li ><a href="<{:U('goods/add')}>">添加商品</a></li>
                     </ul>
 
-                    <div class="nav-header"><i class="icon-briefcase"></i>后台管理<span class="label label-info"></span></div>
+                    <div class="nav-header"><i class="icon-briefcase"></i>用户管理<span class="label label-info"></span></div>
                     <ul class="nav nav-list collapse in">
-                        <li ><a href="<{:U('admin/index')}>">管理员列表</a></li>
-                        <li ><a href="<{:U('admin/agent')}>">代理列表</a></li>
+                        <li ><a href="<{:U('admin/index')}>">后台管理员</a></li>
+                        <li ><a href="<{:U('admin/agent')}>">地区代理</a></li>
+                        <li ><a href="<{:U('user/index')}>">网站用户</a></li>
                     </ul>
 
                     <div class="nav-header"><i class="icon-briefcase"></i>订单管理<span class="label label-info"></span></div>
                     <ul class="nav nav-list collapse in">
                         <li ><a href="<{:U('orders/index')}>">所有订单</a></li>
                         <li ><a href="<{:U('orders/index',array('status'=>1))}>">待付款</a></li>
-                        <li ><a href="<{:U('orders/index',array('status'=>2))}>">已发货</a></li>
+                        <li ><a href="<{:U('orders/index',array('status'=>2))}>">已完成</a></li>
                     </ul>
 
                     <div class="nav-header"><i class="icon-exclamation-sign"></i>支付账单</div>
