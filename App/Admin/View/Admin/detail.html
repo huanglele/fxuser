@@ -4,14 +4,13 @@
         添加地区代理
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" action="<{:U('adduser')}>" method="post" style="margin: 30px auto;">
+        <form class="form-horizontal" action="<{:U('update')}>" method="post" style="margin: 30px auto;">
             <div class="row">
                 <div class="col-xs-5 col-sm-offset-3">
                     <div class="form-group">
-                        <label class="sr-only" for="user">用户</label>
                         <div class="input-group">
                             <div class="input-group-addon">用户</div>
-                            <input type="text" class="form-control" id="user" name="name" placeholder="填写用户名" >
+                            <input type="text" class="form-control" value="<{$info.name}>" >
                         </div>
                     </div>
                 </div>
@@ -19,10 +18,9 @@
             <div class="row">
                 <div class="col-xs-5 col-sm-offset-3">
                     <div class="form-group">
-                        <label class="sr-only" for="pwd">密码</label>
                         <div class="input-group">
                             <div class="input-group-addon">密码</div>
-                            <input type="text" class="form-control" id="pwd" name="pwd" placeholder="填写新用户登录密码" >
+                            <input type="text" class="form-control" name="password" placeholder="留空不修改密码" >
                         </div>
                     </div>
                 </div>
@@ -32,6 +30,16 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">地区</div>
+                            <input type="text" class="form-control" name="text" value="<{$CityCode[$info['city']]}>" disabled="disabled" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-offset-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">修改</div>
                             <select name="sheng" class="form-control"></select>
                             <select name="shi" class="form-control"></select>
                             <select name="city" class="form-control"></select>
@@ -41,8 +49,8 @@
             </div>
             <div class="row">
                 <div class="col-xs-5 col-sm-offset-3">
-                    <input type="hidden" name="role" value="2">
-                    <button type="submit" style="width: 100%" name="submit" class="btn btn-success">添加</button>
+                    <input type="hidden" name="aid" value="<{$info.aid}>">
+                    <button type="submit" style="width: 100%" name="submit" class="btn btn-success">提交</button>
                 </div>
             </div>
         </form>
@@ -84,7 +92,7 @@
         var shi = $('select[name="shi"]').val();
         var ci = city[sheng].children;
         $.each(ci[shi].children,function(i,n){
-            op += '<option value="'+n.value+'">'+ n.text+'</option>';
+            op += '<option value="'+ n.value+'">'+ n.text+'</option>';
         })
         $('select[name="city"]').html(op);
     }

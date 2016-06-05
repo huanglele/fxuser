@@ -17,6 +17,21 @@ return array(
     //加载city文件
     'LOAD_EXT_CONFIG' => 'city',
 
+    'Wx' => array(
+        'AppID' => 'wxc3d04f676c17c0ba',
+        'AppSecret' => 'b4bf70c90f7975e72d78b7803697e434',
+        'Token' => 'Z60z6Z6Q1aavK30K0GVv460t30bnA606',       //微信Token(令牌)
+        'EncodingAESKey' => '',//微信消息加解密密钥
+        'key' => '',
+        'mch_id' => '', //商户号
+        'notify_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/index.php/wechat/notify',
+        'SSLCERT_PATH' => LIB_PATH . "Org/Wxpay/apiclient_cert.pem",
+        'SSLKEY_PATH' => LIB_PATH . "Org/Wxpay/apiclient_key.pem",
+        'CURL_PROXY_HOST' => "0.0.0.0",
+        'CURL_PROXY_PORT' => 0,
+        'REPORT_LEVENL' => 1,
+    ),
+
     //上传配置
     'UploadConfig' => array(
         'maxSize'       =>  0, //上传的文件大小限制 (0-不做限制)

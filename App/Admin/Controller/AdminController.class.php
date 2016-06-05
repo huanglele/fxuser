@@ -63,6 +63,34 @@ class AdminController extends CommonController
     }
 
     /**
+     * 查看代理的详细信息
+     */
+    public function detail(){
+        $id = I('get.id');
+        $info = M('admin')->find($id);
+        if($info && $info['role']==2){
+            $this->assign('info',$info);
+            $this->assign('CityCode',C('CityCode'));
+            $this->display('detail');
+        }
+    }
+
+    /**
+     * 更新地区代理
+     */
+    public function update(){
+        if(isset($_POST['submit'])){
+            $aid = I('post.aid');
+            $map['aid'] = $aid;
+            $pwd = I('post.password','');
+            if($pwd){$map['password'] = md5($pwd);}
+            $map['city'] = I('post.city');
+            M('admin')->save($map);
+            $this->success('更新成功');
+        }
+    }
+
+    /**
      * 删除一个用户，不能删除自己
      */
     public function deluser(){
@@ -94,7 +122,7 @@ class AdminController extends CommonController
             $data['time'] = time();
             $data['role'] = $role;
             if($M->add($data)){
-                $this->success('添加成功',U('index'));
+                $this->success('添加成功');
             }else{
                 $this->error('添加失败');
             }
