@@ -43,7 +43,7 @@ class UserController extends CommonController
      */
     public function detail(){
         $uid = I('get.uid');
-
+        
     }
 
 }

@@ -57,9 +57,9 @@
                     <td><{$vo.uid}></td>
                     <td><img class="headimg" src="<{$vo.headimgurl}>" /></td>
                     <td><{$vo.nickname}></td>
-                    <td><{$vo.coin}></td>
+                    <td><{$vo.vip}></td>
                     <td><{$vo['money']}></td>
-                    <td><a href="<{:U('user/userInfo',array('uid'=>$vo['uid']))}>">更多</a></td>
+                    <td><a href="<{:U('user/detail',array('uid'=>$vo['uid']))}>">更多</a></td>
                 </tr>
             </volist>
             </tbody>
