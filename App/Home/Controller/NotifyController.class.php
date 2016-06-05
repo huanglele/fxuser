@@ -142,7 +142,11 @@ class NotifyController extends Controller
 
             //文本消息
             case Wechat::MSG_TYPE_TEXT:
-                $replyText = C('Wechat.welcome');
+                if($data['Content']=='openid'){
+                    $replyText = $data['FromUserName'];
+                }else{
+                    $replyText = C('Wechat.welcome');
+                }
                 $wechat->replyText($replyText);
                 break;
 
