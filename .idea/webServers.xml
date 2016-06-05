@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="fc9fd224-bdad-4bb2-8132-afc4de2f88da" name="fxuser" url="http://fxuser.91yiso.com">
-        <fileTransfer host="fxuser.91yiso.com" port="21" username="fxuser">
+        <fileTransfer host="fxuser.91yiso.com" port="21" password="dfccdfd2dfdfdfd9dfcfdfd8df9bdf98df99" username="fxuser">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

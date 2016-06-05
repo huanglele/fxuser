@@ -106,28 +106,23 @@ class NotifyController extends Controller
                         if(!$M->where(array('openid'=>$data['FromUserName']))->find()){//判断数库是否添加过该用户
                             //数据库不存在
                             $da = getWxUserInfo($data['FromUserName']);
-                            $invite_uid = isset($data['EventKey'])?$data['EventKey']:0;
-                            if($invite_uid){
-                                $invite_uid = trim($invite_uid,'qrscene_');
+                            $up1 = isset($data['EventKey'])?$data['EventKey']:0;
+                            $up2 = 0;
+                            $leader = 0;
+                            if($up1){
+                                $up1 = trim($up1,'qrscene_');
+                                $upInfo = $M->where(array('uid'=>$up1))->field('uid,up1,leader')->find();
+                                if($upInfo){
+                                    $up2 = $upInfo['up1'];
+                                    $leader = $upInfo['leader'];
+                                }
                             }
-                            $da['invite_uid'] = $invite_uid;
-                            $da['subscribe_time'] = time();
-                            $da['money'] = createRedPackMoney();
+                            $da['up1'] = $up1;
+                            $da['up2'] = $up2;
+                            $da['leader'] = $leader;
+                            $da['vip'] = $da['agent'] = 0;
                             $uid = $M->add($da);
-
-                            $da2['money'] = $da['money'];
-                            $da2['type'] = 4;
-                            $da2['note'] = '关注送红包';
-                            $da2['time'] = time();
-                            $da2['uid'] = $uid;
-                            M('usermoney')->add($da2);
-
-                            $wechat->replyNewsOnce(
-                                "首次关注送你一个红包",
-                                "恭喜你获得了一个".$da['money'].'元的红包,快去领取吧！',
-                                U('index/hb',array('uid'=>$uid),true,true),
-                                'http://'.$_SERVER['HTTP_HOST'].__ROOT__.'/Public/images/hb.jpg'
-                            ); //回复单条图文消息
+                            $wechat->replyText('恭喜你成为本站第'.$uid.'为会员');
                             break;
                         }else{
                             $wechat->replyText(C('Wechat.welcome'));
