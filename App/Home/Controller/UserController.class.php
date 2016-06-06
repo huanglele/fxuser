@@ -28,6 +28,9 @@ class UserController extends Controller
         $this->display('index');
     }
 
+    /**
+     * 微信登录
+     */
     public function login(){
         $tools = new \Org\Wxpay\UserApi();
         $openId = $tools->GetOpenid();
@@ -67,5 +70,46 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * 我的资料
+     */
+    public function self(){
+
+    }
+
+    /**
+     * 我的余额
+     */
+    public function money(){
+
+    }
+
+    /**
+     * 我的链接
+     */
+    public function link(){
+
+    }
+
+    /**
+     * 代理
+     */
+    public function agent(){
+
+    }
+
+    /**
+     * 我的团队
+     */
+    public function team(){
+
+    }
+
+    /**
+     * 我的订单
+     */
+    public function order(){
+
+    }
 
 }
