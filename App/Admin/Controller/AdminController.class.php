@@ -26,7 +26,7 @@ class AdminController extends CommonController
         $map['role'] = 1;
         $M = M('Admin');
         $order = 'aid desc';
-        $this->getData($M,$map,$order,'aid,time,name');
+        $this->getData('Admin',$map,$order,'aid,time,name');
         $this->display('index');
     }
 
@@ -51,7 +51,7 @@ class AdminController extends CommonController
         $M = M('Admin');
         $this->assign('CityCode',C('CityCode'));
         $order = 'aid desc';
-        $this->getData($M,$map,$order,'aid,time,name,city');
+        $this->getData('Admin',$map,$order,'aid,time,name,city');
         $this->display('agent');
     }
 

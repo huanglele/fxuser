@@ -91,7 +91,8 @@ class CommonController extends Controller
      * @param $map  条件
      * @param $order 排序
      */
-    protected function getData($M,$map,$order,$field=false){
+    protected function getData($table,$map,$order,$field=false){
+        $M = M($table);
         $count = $M->where($map)->count();
         $Page = new\Think\Page($count,25);
         $show = $Page->show();
@@ -106,8 +107,8 @@ class CommonController extends Controller
     }
 
     /**
-     * @param $M    需要查询的数据库
-     * @param $map  查询条件
+     * @param $table string 需要查询的数据库名
+     * @param $map array  查询条件
      * @return mixed 返回一共数据
      */
     protected function getCount($table,$map){

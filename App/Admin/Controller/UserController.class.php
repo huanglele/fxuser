@@ -32,7 +32,7 @@ class UserController extends CommonController
 
         $M = M('user');
         $order = 'uid desc';
-        $this->getData($M,$map,$order,'uid,headimgurl,nickname,vip,money');
+        $this->getData('user',$map,$order,'uid,headimgurl,nickname,vip,money');
         $this->assign('Status',C('UserStatue'));
 
         $this->display('index');
@@ -43,7 +43,14 @@ class UserController extends CommonController
      */
     public function detail(){
         $uid = I('get.uid');
-        
+        $info = M('user')->find($uid);
+        $this->assign('info',$info);
+        if($info['agent']){ //查看团队信息
+            $map['leader'] = session('uid');
+            $teamNum = $this->getCount('user',$map);
+            $this->assign('teamNum',$teamNum);
+        }
+        $this->display('detail');
     }
 
 }
