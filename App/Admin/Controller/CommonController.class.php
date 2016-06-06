@@ -55,7 +55,7 @@ class CommonController extends Controller
             $pw = I('post.pw','');
             $map['name'] = $user;
             $map['password'] = md5($pw);
-            $info = M('Admin')->field('name,aid,role')->where($map)->find();
+            $info = M('Admin')->field('name,aid,role,city')->where($map)->find();
             if($info){
                 if($info['role']==1){
                    $tip = '欢迎回来管理员';
@@ -67,6 +67,7 @@ class CommonController extends Controller
                 session('aid',$info['aid']);
                 session('name',$info['name']);
                 session('role',$info['role']);
+                session('city',$info['city']);
                 $this->success($tip,U('index/index'));
             }else{
                 $this->error('用户名不存在或者密码错误');

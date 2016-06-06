@@ -1,7 +1,9 @@
 <style>
-    .headimg {
-        width: 25px;
-        border-radius: 50%;
+    #modal .modal-header {
+        min-height: 16.43px;
+        padding: 15px;
+        border-bottom: 1px solid #e5e5e5;
+        background: #FFFFFF;
     }
 </style>
 <form class="form-horizontal" action="<{:U('index')}>" method="get">
@@ -91,7 +93,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="m_title"></h4>
+                <h4 class="modal-title" id="m_title">订单详情</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" action="<{:U('update')}>" method="post">
@@ -163,7 +165,7 @@
             $('#tel').val($(this).attr('data-tel'));
             $('#city').val($(this).attr('data-city'));
             $('#addr').val($(this).attr('data-addr'));
-            $('#m_title').val($(this).attr('data-oid')+'订单详情');
+//            $('#m_title').html($(this).attr('data-oid')+'订单详情');
             $('#m_oid').val($(this).attr('data-oid'));
             $('#m_status').val($(this).attr('data-status'));
             modal.modal();

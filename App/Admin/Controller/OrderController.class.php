@@ -17,6 +17,9 @@ class OrderController extends CommonController
      */
     public function index(){
         $map = array();
+        if(session('role')=='2'){
+            $map['city'] = session('city');
+        }
         $oid = I('get.oid');
         if($oid) $map['oid'] = $oid;
         $this->assign('oid',$oid);

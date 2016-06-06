@@ -94,6 +94,7 @@ class GoodsController extends CommonController
             if($ac == 'add'){
                 $data['create_time'] = time();
                 if($M->add($data)){
+                    $this->updateVipMap();
                     $this->success('添加成功',U('index'));
                 }else{
                     $this->error('添加失败请重试');
@@ -102,6 +103,7 @@ class GoodsController extends CommonController
                 $gid = I('post.gid');
                 if(!$gid)   $this->error('参数错误',U('index'));
                 if($M->save($data)){
+                    $this->updateVipMap();
                     $this->success('更新成功',U('index'));
                 }else{
                     $this->error('更新失败请重试');
@@ -110,6 +112,12 @@ class GoodsController extends CommonController
         }else{
             $this->error('页面不存在',U('index'));
         }
+    }
+
+    private function updateVipMap(){
+        $date = M('goods')->getField('price,name');
+        $date['0.00'] = '普通会员';
+        S('VipMap',$date);
     }
 
 }
