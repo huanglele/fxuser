@@ -1,37 +1,58 @@
 <style>
-    .headimg{
+    .headimg {
         width: 25px;
         border-radius: 50%;
     }
 </style>
 <form class="form-horizontal" action="<{:U('index')}>" method="get">
     <div class="row">
-        <div class="col-xs-3">
+        <div class="col-xs-2">
             <div class="form-group">
-                <label class="sr-only">用户ID</label>
                 <div class="input-group">
                     <div class="input-group-addon">用户ID</div>
-                    <input type="text" class="form-control" id="uid" name="uid" placeholder="填写用户ID" value="<{$uid}>">
+                    <input type="text" class="form-control" name="uid" placeholder="填写用户ID" value="<{$uid}>">
                 </div>
             </div>
         </div>
-        <div class="col-xs-5">
+        <div class="col-xs-2">
             <div class="form-group">
-                <label class="sr-only" for="name">用户昵称</label>
                 <div class="input-group">
                     <div class="input-group-addon">用户昵称</div>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="填写用户昵称" value="<{$name}>">
+                    <input type="text" class="form-control" name="name" placeholder="填写用户昵称" value="<{$name}>">
                 </div>
             </div>
         </div>
-
+        <div class="col-xs-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">直接推荐</div>
+                    <input type="text" class="form-control" name="up1" placeholder="直接推荐用户ID" value="<{$up1}>">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">间接推荐</div>
+                    <input type="text" class="form-control" name="up2" placeholder="间接推荐用户ID" value="<{$up2}>">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">团队Leader</div>
+                    <input type="text" class="form-control" name="leader" placeholder="团队LeaderID" value="<{$leader}>">
+                </div>
+            </div>
+        </div>
         <div class="col-xs-2 ">
             <button type="submit" class="btn btn-primary">搜索</button>
         </div>
     </div>
 </form>
 <script>
-    $(window).ready(function(){
+    $(window).ready(function () {
         $('select[name="status"]').val('<{$status}>');
     })
 </script>
@@ -55,7 +76,7 @@
             <volist name="list" id="vo">
                 <tr>
                     <td><{$vo.uid}></td>
-                    <td><img class="headimg" src="<{$vo.headimgurl}>" /></td>
+                    <td><img class="headimg" src="<{$vo.headimgurl}>"/></td>
                     <td><{$vo.nickname}></td>
                     <td><{$vo.vip}></td>
                     <td><{$vo['money']}></td>

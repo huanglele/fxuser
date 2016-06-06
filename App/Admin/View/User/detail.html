@@ -17,57 +17,14 @@
             </tr>
             <tr>
                 <td>Leader ID：<eq name="info.leader" value="0">无<else /><a target="_blank" href="<{:U('user/detail')}>?uid=<{$info.leader}>"><{$info.leader}></a></eq></td>
-                <td>自己团队：<eq name="info.agent" value="0">非代理<else /><{$teamNum}></eq></td>
+                <td>自己团队：<eq name="info.agent" value="0">非代理<else /><a target="_blank" href="<{:U('user/index')}>?leader=<{$info.uid}>"><{$teamNum}></a></eq></td>
+            </tr>
+            <tr>
+                <td>他的直接推荐：<a target="_blank" href="<{:U('user/index')}>?up1=<{$info.uid}>">点击查看</a></td>
+                <td>他的间接推荐：<a target="_blank" href="<{:U('user/index')}>?up2=<{$info.uid}>">点击查看</a></td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <!--添加自定义财务记录-->
-    <div class="panel panel-default">
-        <div class="panel-heading">财务管理</div>
-        <div class="panel-body">
-            <div class="col-xs-8 col-xs-offset-2">
-                <form id="money" class="form-horizontal" name="money" action="<{:U('user/umoney')}>" method="post">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <select name="status" class="form-control">
-                                <option value="5">扣除</option>
-                                <option value="4">奖励</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-3">
-                            <input class="form-control" name="amount" placeholder="金额" type="text" />
-                        </div>
-                        <div class="col-xs-3">
-                            <input type="hidden" name="uid" value="<{$info.uid}>" />
-                            <button class="btn btn-warning" name="submit">添加记录</button>
-                        </div>
-                        <div class="col-xs-3 text-center">
-                            <a href="<{:U('money/index',array('id'=>$info['uid']))}>" target="_blank" role="button" class="btn btn-default">查看详细记录</a>
-                        </div>
-                        <div class="col-xs-12" style="margin-top: 20px;">
-                            <textarea name="note" class="form-control" placeholder="说明"></textarea>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
-<script>
-    $(window).ready(function(){
-        var $moneyForm = $('#money');
-        $moneyForm.submit(function(){
-            if(isNaN($('input[name="amount"]').val())){
-                alert('请填写正确的金额');
-                return false;
-            }
-            if($('textarea[name="exp"]').val()==''){
-                if(!confirm('你没有填写记录说明，确定提交?')){
-                    return false;
-                }
-            }
-        });
-    })
-</script>
