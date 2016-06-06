@@ -8,23 +8,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
     <link rel="stylesheet" href="__PUBLIC__/css/mui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1465203359_1545167.css" />
     <script src="__PUBLIC__/js/mui.min.js"></script>
     <script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
     <style>
-        .mui-bar-nav{
-            background-color: #EA4F23;
-            -webkit-box-shadow: 0 1px 6px #EA4F23;
-            box-shadow: 0 1px 6px #EA4F23;
-        }
-        .mui-bar-nav .mui-title{
-            color: #f7f7f7;
-            font-weight: bold;
-        }
         .info-head-box{
             background-color: #EA4F23;
             text-align: center;
             color:floralwhite;
-            margin-top: 44px;
             padding: 20px 0px 10px;
             position: relative;
         }
@@ -62,35 +53,32 @@
     </style>
 </head>
 <body>
-<header class="mui-bar mui-bar-nav">
-    <a class="mui-icon mui-icon-bars mui-pull-left mui-plus-visible"></a>
-    <a id="info" class="mui-icon mui-icon-gear mui-pull-right"style="color: #Ffffff;"></a>
-    <h1 class="mui-title"><{$info.nickname}></h1>
-</header>
+
 <div class="info-head-box">
     <div class="info-img">
-        <img class="headimg" src="<{$info.headimgurl|headImgUrl}>" />
+        <img class="headimg" src="<{$info.headimgurl}>" />
     </div>
     <div class="info-score">
-        <{$VipMap[$info['vip']]}>
+        <h4><{$info.nickname}></h4>
+        <h4><{$VipMap[$info['vip']]}></h4>
     </div>
 </div>
 <div class="info-count">
     <ul class="mui-table-view mui-grid-view mui-grid-9">
         <li class="mui-table-view-cell mui-media mui-col-xs-4">
             <a href="#">
-                <span>5</span>
-                <div class="">今日订单</div></a>
+                <span>0</span>
+                <div class="">我的下属</div></a>
         </li>
         <li class="mui-table-view-cell mui-media mui-col-xs-4">
             <a href="#">
-                <span>3</span>
+                <span><{$info.money}></span>
                 <div class="">账户余额</div></a>
         </li>
         <li class="mui-table-view-cell mui-media mui-col-xs-4">
             <a href="#">
-                <span>9</span>
-                <div class="">积分</div></a>
+                <span>0</span>
+                <div class="">我的红包</div></a>
         </li>
     </ul>
 </div>
@@ -99,27 +87,30 @@
     <!--九宫格菜单-->
     <div class="menu">
         <ul class="mui-table-view mui-grid-view mui-grid-9">
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="<{:U('server/listHelp')}>">
-                <span class="mui-icon mui-icon-paperplane"></span>
-                <div class="mui-media-body">许愿池</div></a></li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-                <span class="mui-icon mui-icon-gear"></span>
-                <div class="mui-media-body">设置</div></a></li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="<{:U('server/myTask')}>">
-                <span class="mui-icon mui-icon-flag"><span class="mui-badge mui-badge-warning">5</span></span>
-                <div class="mui-media-body">任务</div></a></li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4"><a href="<{:U('user/self')}>">
+                <span class="mui-icon iconfont icon-self"></span>
+                <div class="mui-media-body">我的资料</div></a></li>
 
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a id="clearCache" href="#">
-                <span class="mui-icon mui-icon-flag"></span>
-                <div class="mui-media-body">清除缓存</div></a></li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4"><a href="<{:U('user/money')}>">
+                <span class="mui-icon iconfont icon-money"></span>
+                <div class="mui-media-body">我的余额</div></a></li>
 
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a  href="<{:U('index/index')}>">
-                <span class="mui-icon mui-icon-flag"></span>
-                <div class="mui-media-body">返回首页</div></a></li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4"><a href="<{:U('user/link')}>">
+                <span class="mui-icon iconfont icon-link"></span>
+                <div class="mui-media-body">我的推广</div></a></li>
 
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="<{:U('server/map')}>">
-                <span class="mui-icon mui-icon-flag"><span class="mui-badge mui-badge-warning">5</span></span>
-                <div class="mui-media-body">测试地图</div></a></li>
+
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4"><a  href="<{:U('user/agent')}>">
+                <span class="mui-icon iconfont icon-plane"></span>
+                <div class="mui-media-body">升级代理</div></a></li>
+
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4"><a href="<{:U('user/team')}>">
+                <span class="mui-icon iconfont icon-team"></span>
+                <div class="mui-media-body">我的团队</div></a></li>
+
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4"><a href="<{:U('user/order')}>">
+                <span class="mui-icon iconfont icon-order"></span>
+                <div class="mui-media-body">我的订单</div></a></li>
         </ul>
     </div>
 

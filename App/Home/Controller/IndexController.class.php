@@ -21,7 +21,9 @@ class IndexController extends Controller
     }
 
     public function login(){
-
+        $info = M('user')->find();
+        session('uid',$info['uid']);
+        session('openid',$info['openid']);
     }
 
     public function test()
