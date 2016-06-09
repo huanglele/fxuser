@@ -17,8 +17,32 @@ class IndexController extends Controller
      * 显示首页
      */
     public function index(){
-        var_dump(S('VipMap'));
+        $this->goods();die;
     }
+
+    public function goods(){
+        $map['status'] = 1;
+        $list = M('goods')->where($map)->order('price asc')->field('gid,name,img,price')->select();
+//        var_dump($list);
+        $this->assign('list',$list);
+        $this->assign('VipMap',S('VipMap'));
+        $this->display('goods');
+
+    }
+
+    public function item(){
+        $id = I('get.id');
+        $info = M('goods')->find($id);
+        if($info){
+            $this->assign('info',$info);
+            $name = S('VipMap');
+            $this->assign('VipName',$name[$info['price']]);
+            $this->display('item');
+        }else{
+            $this->error('页面不存在','index/goods');
+        }
+    }
+
 
     public function login(){
         $info = M('user')->find();

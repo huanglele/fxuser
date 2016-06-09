@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title><{$VipName}></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="__PUBLIC__/css/mui.min.css">
+    <style>
+        body{background: white}
+        .mui-content{background: white}
+        h5 {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            text-indent: 12px;
+            border-top: 1px solid #dd524d;
+        }
+
+        .mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+            font-size: 15px;
+            margin-top: 8px;
+            color: #333;
+        }
+        .info{
+            height: 40px;
+            border-bottom: 1px solid beige;
+        }
+        p img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title"><{$VipName}></h1>
+</header>
+<div class="mui-content">
+    <p style="text-align: center">
+        <img src="__ROOT__/upload/<{$info.img}>" style="width: 100%">
+    </p>
+    <h3><{$VipName}></h3>
+    <div class="mui-content-padded info">
+        <div class="mui-pull-left">
+            <h4>价格:<span style="color:red"><{$info.price}></span></h4>
+        </div>
+        <div class="mui-pull-right">
+            <a class="mui-btn mui-btn-danger" href="<{:U('index/cart')}>?id=<{$info.gid}>">购买</a>
+        </div>
+    </div>
+    <div class="mui-content-padded"><{$info.desc}></div>
+</div>
+</body>
+<script src="__PUBLIC__/js/mui.min.js"></script>
+<script>
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+</script>
+</html>
