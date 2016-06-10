@@ -9,8 +9,152 @@
     <!--标准mui.css-->
     <link rel="stylesheet" href="__PUBLIC__/css/mui.min.css">
     <style>
-        body{background: white}
-        .mui-content{background: white}
+        html,
+        body {
+            background-color: #efeff4;
+        }
+        select{width: auto}
+        .mui-views,
+        .mui-view,
+        .mui-pages,
+        .mui-page,
+        .mui-page-content {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #efeff4;
+        }
+        .mui-pages {
+            top: 46px;
+            height: auto;
+        }
+        .mui-scroll-wrapper,
+        .mui-scroll {
+            background-color: #efeff4;
+        }
+        .mui-page.mui-transitioning {
+            -webkit-transition: -webkit-transform 300ms ease;
+            transition: transform 300ms ease;
+        }
+        .mui-page-left {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+        .mui-ios .mui-page-left {
+            -webkit-transform: translate3d(-20%, 0, 0);
+            transform: translate3d(-20%, 0, 0);
+        }
+        .mui-navbar {
+            position: fixed;
+            right: 0;
+            left: 0;
+            z-index: 10;
+            height: 44px;
+            background-color: #f7f7f8;
+        }
+        .mui-navbar .mui-bar {
+            position: absolute;
+            background: transparent;
+            text-align: center;
+        }
+        .mui-android .mui-navbar-inner.mui-navbar-left {
+            opacity: 0;
+        }
+        .mui-ios .mui-navbar-left .mui-left,
+        .mui-ios .mui-navbar-left .mui-center,
+        .mui-ios .mui-navbar-left .mui-right {
+            opacity: 0;
+        }
+        .mui-navbar .mui-btn-nav {
+            -webkit-transition: none;
+            transition: none;
+            -webkit-transition-duration: .0s;
+            transition-duration: .0s;
+        }
+        .mui-navbar .mui-bar .mui-title {
+            display: inline-block;
+            width: auto;
+        }
+        .mui-page-shadow {
+            position: absolute;
+            right: 100%;
+            top: 0;
+            width: 16px;
+            height: 100%;
+            z-index: -1;
+            content: '';
+        }
+        .mui-page-shadow {
+            background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+            background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+        }
+        .mui-navbar-inner.mui-transitioning,
+        .mui-navbar-inner .mui-transitioning {
+            -webkit-transition: opacity 300ms ease, -webkit-transform 300ms ease;
+            transition: opacity 300ms ease, transform 300ms ease;
+        }
+        .mui-page {
+            display: none;
+        }
+        .mui-pages .mui-page {
+            display: block;
+        }
+        .mui-page .mui-table-view:first-child {
+            margin-top: 15px;
+        }
+        .mui-page .mui-table-view:last-child {
+            margin-bottom: 30px;
+        }
+        .mui-table-view {
+            margin-top: 20px;
+        }
+
+        .mui-table-view span.mui-pull-right {
+            color: #999;
+        }
+        .mui-table-view-divider {
+            background-color: #efeff4;
+            font-size: 14px;
+        }
+        .mui-table-view-divider:before,
+        .mui-table-view-divider:after {
+            height: 0;
+        }
+        .head {
+            height: 40px;
+        }
+        #head {
+            line-height: 40px;
+        }
+        .head-img {
+            width: 40px;
+            height: 40px;
+        }
+        #head-img1 {
+            position: absolute;
+            bottom: 10px;
+            right: 40px;
+            width: 40px;
+            height: 40px;
+        }
+        .update {
+            font-style: normal;
+            color: #999999;
+            margin-right: -25px;
+            font-size: 15px
+        }
+        .mui-fullscreen {
+            position: fixed;
+            z-index: 20;
+            background-color: #000;
+        }
+        .mui-ios .mui-navbar .mui-bar .mui-title {
+            position: static;
+        }
         h5 {
             padding-top: 8px;
             padding-bottom: 8px;
@@ -33,31 +177,201 @@
         }
     </style>
 </head>
-<body>
-<header class="mui-bar mui-bar-nav">
-    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title"><{$VipName}></h1>
-</header>
-<div class="mui-content">
-    <p style="text-align: center">
-        <img src="__ROOT__/upload/<{$info.img}>" style="width: 100%">
-    </p>
-    <h3><{$VipName}></h3>
-    <div class="mui-content-padded info">
-        <div class="mui-pull-left">
-            <h4>价格:<span style="color:red"><{$info.price}></span></h4>
+<body class="mui-fullscreen">
+<!--页面主结构开始-->
+<div id="app" class="mui-views">
+    <div class="mui-view">
+        <div class="mui-navbar">
         </div>
-        <div class="mui-pull-right">
-            <a class="mui-btn mui-btn-danger" href="<{:U('index/cart')}>?id=<{$info.gid}>">购买</a>
+        <div class="mui-pages">
         </div>
     </div>
-    <div class="mui-content-padded"><{$info.desc}></div>
+</div>
+<!--页面主结构结束-->
+<div id="goods" class="mui-page">
+    <div class="mui-navbar-inner mui-bar mui-bar-nav">
+        <button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+            <span class="mui-icon mui-icon-left-nav"></span>
+        </button>
+        <h1 class="mui-center mui-title"><{$VipName}></h1>
+    </div>
+    <div class="mui-page-content">
+        <p style="text-align: center">
+            <img src="__ROOT__/upload/<{$info.img}>" style="width: 100%">
+        </p>
+        <h3><{$VipName}></h3>
+        <div class="mui-content-padded info">
+            <div class="mui-pull-left">
+                <h4>价格:<span style="color:red"><{$info.price}></span></h4>
+            </div>
+            <div class="mui-pull-right">
+                <notempty name="Think.session.uid">
+                    <a class="mui-btn mui-btn-danger" href="#buy">购买</a>
+                    <else />
+                    <a class="mui-btn mui-btn-danger" href="<{:U('user/login')}>">购买</a>
+                </notempty>
+            </div>
+        </div>
+        <div class="mui-content-padded"><{$info.desc}></div>
+    </div>
+</div>
+
+<div id="buy" class="mui-page feedback">
+    <div class="mui-navbar-inner mui-bar mui-bar-nav">
+        <button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+            <span class="mui-icon mui-icon-left-nav"></span>
+        </button>
+        <h1 class="mui-center mui-title">填写地址</h1>
+    </div>
+    <div class="mui-page-content">
+        <form id="post" method="post" action="<{:U('user/buy')}>">
+            <p>收货人姓名</p>
+            <div class="mui-input-row">
+                <input type="text" name="name" class="mui-input-clear  contact" placeholder="必填" />
+            </div>
+            <p>联系方式</p>
+            <div class="mui-input-row">
+                <input type="text" name="tel" class="mui-input-clear  contact" placeholder="必填" />
+            </div>
+            <p>选择地区</p>
+            <select name="sheng" class="form-control"></select>
+            <select name="shi" class="form-control"></select>
+            <select name="city" class="form-control"></select>
+            <p>详细地址</p>
+            <div class="row mui-input-row">
+                <textarea name="addr" class="mui-input-clear question" placeholder="请详填写收货地址"></textarea>
+            </div>
+            <input type="hidden" name="gid" value="<{$info.gid}>">
+            <button type="submit" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 0;">下单</button>
+        </form>
+    </div>
 </div>
 </body>
 <script src="__PUBLIC__/js/mui.min.js"></script>
+<script src="__PUBLIC__/js/mui.view.js"></script>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="__PUBLIC__/js/city.json.js" type="text/javascript"></script>
+<script>
+
+</script>
 <script>
     mui.init({
         swipeBack: true //启用右滑关闭功能
     });
+    //初始化单页view
+    var viewApi = mui('#app').view({
+        defaultPage: '#goods'
+    });
+    //初始化单页的区域滚动
+    mui('.mui-scroll-wrapper').scroll();
+
+    var view = viewApi.view;
+    (function($) {
+        //处理view的后退与webview后退
+        var oldBack = $.back;
+        $.back = function() {
+            if (viewApi.canBack()) { //如果view可以后退，则执行view的后退
+                viewApi.back();
+            } else { //执行webview后退
+                oldBack();
+            }
+        };
+        //监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
+        //第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
+        view.addEventListener('pageBeforeShow', function(e) {
+            //				console.log(e.detail.page.id + ' beforeShow');
+        });
+        view.addEventListener('pageShow', function(e) {
+            //				console.log(e.detail.page.id + ' show');
+        });
+        view.addEventListener('pageBeforeBack', function(e) {
+            //				console.log(e.detail.page.id + ' beforeBack');
+        });
+        view.addEventListener('pageBack', function(e) {
+            //				console.log(e.detail.page.id + ' back');
+        });
+    })(mui);
+
+    info = null;
+    $(window).ready(function(){
+        createSheng();
+        getPreference();
+        $('#post').submit(function(){
+            if($('input[name="name"]').val() == ''){
+                mui.toast('收货人姓名不能为空');
+                $('input[name="name"]').focus();return false;
+            }
+            if($('input[name="tel"]').val() == ''){
+                mui.toast('收货人联系方式不能为空');
+                $('input[name="tel"]').focus();return false;
+            }
+            if($('textarea[name="addr"]').val() == ''){
+                mui.toast('详细地址不能为空');
+                $('textarea[name="addr"]').focus();return false;
+            }
+            if($('select[name="city"]').val() == ''){
+                mui.toast('请选择收货地址');
+            }
+        })
+    })
+
+
+
+    createSheng = function(){
+        var op = '';
+        $.each(city,function(i,n){
+            op += '<option value="'+i+'">'+ n.text+'</option>';
+        })
+        $('select[name="sheng"]').html(op);
+        createShi();
+        $('select[name="sheng"]').change(function(){
+            createShi();
+        })
+    }
+
+    createShi = function(){
+        var op = '';
+        var sheng = $('select[name="sheng"]').val();
+        $.each(city[sheng].children,function(i,n){
+            op += '<option value="'+ n.value+'">'+ n.text+'</option>';
+        })
+        $('select[name="shi"]').html(op);
+        createCity();
+        $('select[name="shi"]').change(function(){
+            createCity();
+        })
+    }
+
+    createCity = function(){
+        var op = '';
+        var sheng = $('select[name="sheng"]').val();
+        var shi = $('select[name="shi"] option:selected').index();
+        var ci = city[sheng].children;
+        $.each(ci[shi].children,function(i,n){
+            op += '<option value="'+n.value+'">'+ n.text+'</option>';
+        })
+        $('select[name="city"]').html(op);
+    }
+
+    //获取上次收到地址信息
+    getPreference = function(){
+        $.ajax({
+            url:"<{:U('index/preference')}>",
+            success:function(data){
+                if(data.status='success'){
+                    $('input[name="name"]').val(data.name);
+                    $('input[name="tel"]').val(data.tel);
+                    $('textarea[name="addr"]').val(data.addr);
+                    info = data;
+                    $('select[name="sheng"]').val(data.sheng);
+                    createShi();
+                    $('select[name="shi"]').val(data.shi);
+                    createCity();
+                    $('select[name="city"]').val(data.city);
+                }
+            }
+        })
+    }
+
 </script>
 </html>

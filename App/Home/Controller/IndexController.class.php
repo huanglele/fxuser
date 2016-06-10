@@ -43,6 +43,23 @@ class IndexController extends Controller
         }
     }
 
+    /**
+     * 获取上次订单设置的地址信息
+     */
+    public function preference(){
+        $uid = session('uid');
+        if($uid){
+            $map['uid'] = $uid;
+            $info = M('order')->field('name,addr,sheng,shi,city,tel')->where($map)->order('oid desc')->find();
+            if($info){
+                $info['status'] = 'success';
+                $this->ajaxReturn($info);
+            }
+        }else{
+            $this->error('没有登录');
+        }
+    }
+
 
     public function login(){
         $info = M('user')->find();

@@ -89,7 +89,7 @@
     createCity = function(){
         var op = '';
         var sheng = $('select[name="sheng"]').val();
-        var shi = $('select[name="shi"]').val();
+        var shi = $('select[name="shi"] option:selected').index();
         var ci = city[sheng].children;
         $.each(ci[shi].children,function(i,n){
             op += '<option value="'+ n.value+'">'+ n.text+'</option>';
