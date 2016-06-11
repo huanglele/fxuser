@@ -8,6 +8,7 @@
 
 namespace Org\Wxpay;
 include_once 'WxPay.Exception.php';
+include_once 'WxPay.Data.php';
 
 class WxBizPay
 {
@@ -26,9 +27,8 @@ class WxBizPay
     public function send($data){
         $this->values['mch_appid'] = C('Wx.AppID');     //公众账号ID
         $this->values['mchid'] = C('Wx.mch_id');     //微信支付分配的商户号
-        $this->values['act_name'] = '活动名称';     //活动名称
-        $this->values['remark'] = '猜越多得越多，快来抢！';     //备注信息
-        $this->values['client_ip'] = $_SERVER['REMOTE_ADDR'];     //调用接口的机器Ip地址
+        $this->values['spbill_create_ip'] = $_SERVER['REMOTE_ADDR'];     //调用接口的机器Ip地址
+        $this->values['check_name'] = 'NO_CHECK';     //NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
         if(is_array($data)){
             foreach($data as $k=>$v){
                 $this->values[$k] = $v;
@@ -49,47 +49,19 @@ class WxBizPay
      * @return array 执行结果集
      * @throws WxPayException
      */
-    public function query($mch_billno){
-        $this->values['mch_billno'] = $mch_billno;
+    public function query($partner_trade_no){
+        $this->values['partner_trade_no'] = $partner_trade_no;
         $this->values['mch_id'] = C('Wx.mch_id');
         $this->values['appid'] = C('Wx.AppID');
-        $this->values['bill_type'] = 'MCHT';
         $this->SetSign();
         $xml = $this->ToXml();
-        $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/gettransferinfo';
+        $url = '	https://api.mch.weixin.qq.com/mmpaymkttransfers/gettransferinfo';
         $response = $this->postXmlCurl($xml,$url,true);
 
         $result = WxBizPayResults::Init($response);
         return $result;
     }
 
-    /**
-     * 设置备注信息
-     * @param string $value
-     **/
-    public function SetRemark($value)
-    {
-        $this->values['remark'] = $value;
-    }
-
-    /**
-     * 设置活动名称
-     * @param string $value
-     **/
-    public function SetAct_name($value)
-    {
-        $this->values['act_name'] = $value;
-    }
-
-
-    /**
-     * 设置红包祝福语
-     * @param string $value
-     **/
-    public function SetWishing($value)
-    {
-        $this->values['wishing'] = $value;
-    }
 
     /**
      * 设置微信支付分配的商户号
@@ -136,7 +108,7 @@ class WxBizPay
      *企业付款描述信息
      */
     public function SetDesc($value){
-        $this->values['partner_trade_no'] = $value;
+        $this->values['desc'] = $value;
     }
 
 
@@ -147,7 +119,7 @@ class WxBizPay
     public function SetSign()
     {
         $sign = $this->MakeSign();
-        $this->values['desc'] = $sign;
+        $this->values['sign'] = $sign;
         return $sign;
     }
 
