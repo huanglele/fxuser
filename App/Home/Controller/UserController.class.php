@@ -226,4 +226,17 @@ class UserController extends Controller
         }
     }
 
+    /**
+     *
+     */
+    public function getCash(){
+        $Pay = new \Org\Wxpay\WxBizPay();
+        $data['openid'] = session('openid');
+        $data['amount'] = 100;
+        $data['partner_trade_no'] = createBizPayNum();
+        $data['partner_trade_no'] = '企业付款操作说明信息。必填。';
+        $res = $Pay->send($data);
+        var_dump($res);
+    }
+
 }

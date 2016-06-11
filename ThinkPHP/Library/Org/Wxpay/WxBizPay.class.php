@@ -1,38 +1,34 @@
 <?php
 /**
  * Author: huanglele
- * Date: 2016/4/4
- * Time: ä¸‹åˆ 07:31
+ * Date: 2016/6/11
+ * Time: ÏÂÎç 11:55
  * Description:
  */
 
 namespace Org\Wxpay;
-
 include_once 'WxPay.Exception.php';
 
-class WxRedPack
+class WxBizPay
 {
-
     protected $values = array();
-
 
     public function __construct(){
         $this->values['nonce_str'] = $this->getNonceStr(32);
     }
 
     /**
-     * å‘é€ä¸€ä¸ªçº¢åŒ…
-     * @param $data éœ€è¦çš„å‚æ•°æ•°ç»„
-     * @return array æ‰§è¡Œçš„ç»“æœé›†
+     * ·¢ËÍÆóÒµ¸¶¿î
+     * @param $data ĞèÒªµÄ²ÎÊıÊı×é
+     * @return array Ö´ĞĞµÄ½á¹û¼¯
      * @throws WxPayException
      */
     public function send($data){
-        $this->values['total_num'] = 1;     //çº¢åŒ…å‘æ”¾æ€»äººæ•°
-        $this->values['wishing'] = 'çº¢åŒ…ç¥ç¦è¯­';     //çº¢åŒ…å‘æ”¾æ€»äººæ•°
-        $this->values['client_ip'] = 'ç»™æ‚¨æ´¾çº¢åŒ…äº†';     //è°ƒç”¨æ¥å£çš„æœºå™¨Ipåœ°å€
-        $this->values['act_name'] = 'æ´»åŠ¨åç§°';     //æ´»åŠ¨åç§°
-        $this->values['remark'] = 'çŒœè¶Šå¤šå¾—è¶Šå¤šï¼Œå¿«æ¥æŠ¢ï¼';     //å¤‡æ³¨ä¿¡æ¯
-        $this->values['client_ip'] = $_SERVER['REMOTE_ADDR'];     //è°ƒç”¨æ¥å£çš„æœºå™¨Ipåœ°å€
+        $this->values['mch_appid'] = C('Wx.AppID');     //¹«ÖÚÕËºÅID
+        $this->values['mchid'] = C('Wx.mch_id');     //Î¢ĞÅÖ§¸¶·ÖÅäµÄÉÌ»§ºÅ
+        $this->values['act_name'] = '»î¶¯Ãû³Æ';     //»î¶¯Ãû³Æ
+        $this->values['remark'] = '²ÂÔ½¶àµÃÔ½¶à£¬¿ìÀ´ÇÀ£¡';     //±¸×¢ĞÅÏ¢
+        $this->values['client_ip'] = $_SERVER['REMOTE_ADDR'];     //µ÷ÓÃ½Ó¿ÚµÄ»úÆ÷IpµØÖ·
         if(is_array($data)){
             foreach($data as $k=>$v){
                 $this->values[$k] = $v;
@@ -40,17 +36,17 @@ class WxRedPack
         }
         $this->SetSign();
         $xml = $this->ToXml();
-        $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack';
+        $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
         $response = $this->postXmlCurl($xml,$url,true);
 
-        $result = WxRedPackResults::Init($response);
+        $result = WxBizPayResults::Init($response);
         return $result;
     }
 
     /**
-     * æŸ¥è¯¢ä¸€ä¸ªå¾®ä¿¡çº¢åŒ…çŠ¶æ€
-     * @param $mch_billno å•†æˆ·å‘æ”¾çº¢åŒ…çš„å•†æˆ·è®¢å•å·
-     * @return array æ‰§è¡Œç»“æœé›†
+     * ²éÑ¯Ò»¸öÆóÒµ¸¶¿î×´Ì¬
+     * @param $mch_billno ÉÌ»§·¢·Åºì°üµÄÉÌ»§¶©µ¥ºÅ
+     * @return array Ö´ĞĞ½á¹û¼¯
      * @throws WxPayException
      */
     public function query($mch_billno){
@@ -60,15 +56,15 @@ class WxRedPack
         $this->values['bill_type'] = 'MCHT';
         $this->SetSign();
         $xml = $this->ToXml();
-        $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/gethbinfo';
+        $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/gettransferinfo';
         $response = $this->postXmlCurl($xml,$url,true);
 
-        $result = WxRedPackResults::Init($response);
+        $result = WxBizPayResults::Init($response);
         return $result;
     }
 
     /**
-     * è®¾ç½®å¤‡æ³¨ä¿¡æ¯
+     * ÉèÖÃ±¸×¢ĞÅÏ¢
      * @param string $value
      **/
     public function SetRemark($value)
@@ -77,7 +73,7 @@ class WxRedPack
     }
 
     /**
-     * è®¾ç½®æ´»åŠ¨åç§°
+     * ÉèÖÃ»î¶¯Ãû³Æ
      * @param string $value
      **/
     public function SetAct_name($value)
@@ -87,7 +83,7 @@ class WxRedPack
 
 
     /**
-     * è®¾ç½®çº¢åŒ…ç¥ç¦è¯­
+     * ÉèÖÃºì°ü×£¸£Óï
      * @param string $value
      **/
     public function SetWishing($value)
@@ -96,7 +92,7 @@ class WxRedPack
     }
 
     /**
-     * è®¾ç½®å¾®ä¿¡æ”¯ä»˜åˆ†é…çš„å•†æˆ·å·
+     * ÉèÖÃÎ¢ĞÅÖ§¸¶·ÖÅäµÄÉÌ»§ºÅ
      * @param string $value
      **/
     public function SetMch_id($value)
@@ -105,7 +101,7 @@ class WxRedPack
     }
 
     /**
-     * è®¾ç½®å¾®ä¿¡åˆ†é…çš„å…¬ä¼—è´¦å·ID
+     * ÉèÖÃÎ¢ĞÅ·ÖÅäµÄ¹«ÖÚÕËºÅID
      * @param string $value
      **/
     public function SetAppid($value)
@@ -114,62 +110,69 @@ class WxRedPack
     }
 
     /**
-     * è®¾ç½®æ¥å—çº¢åŒ…çš„ç”¨æˆ·ç”¨æˆ·åœ¨wxappidä¸‹çš„openid
+     * ÉèÖÃ½ÓÊÜºì°üµÄÓÃ»§ÓÃ»§ÔÚwxappidÏÂµÄopenid
      */
     public function SetOpenid($value){
-        $this->values['re_openid'] = $value;
+        $this->values['openid'] = $value;
     }
 
     /**
-     * è®¾ç½®è®¢å•æ€»é‡‘é¢ï¼Œåªèƒ½ä¸ºæ•´æ•°ï¼Œè¯¦è§æ”¯ä»˜é‡‘é¢
+     * ÉèÖÃ¶©µ¥×Ü½ğ¶î£¬Ö»ÄÜÎªÕûÊı£¬Ïê¼ûÖ§¸¶½ğ¶î
      * @param string $value
      **/
-    public function SetTotal_amount($value)
+    public function SetAmount($value)
     {
-        $this->values['total_amount'] = $value;
+        $this->values['amount'] = $value;
     }
 
     /**
-     * String(28)
-     * è®¾ç½®å•†æˆ·è®¢å•å·ï¼ˆæ¯ä¸ªè®¢å•å·å¿…é¡»å”¯ä¸€ï¼‰ç»„æˆï¼šmch_id+yyyymmdd+10ä½ä¸€å¤©å†…ä¸èƒ½é‡å¤çš„æ•°å­—ã€‚
+     * ÉèÖÃÉÌ»§¶©µ¥ºÅ
      */
-    public function SetMch_billno($value){
-        $this->values['mch_billno'] = $value;
+    public function SetTrade_no($value){
+        $this->values['partner_trade_no'] = $value;
+    }
+
+    /**
+     *ÆóÒµ¸¶¿îÃèÊöĞÅÏ¢
+     */
+    public function SetDesc($value){
+        $this->values['partner_trade_no'] = $value;
     }
 
 
     /**
-     * è®¾ç½®ç­¾åï¼Œè¯¦è§ç­¾åç”Ÿæˆç®—æ³•
+     * ÉèÖÃÇ©Ãû£¬Ïê¼ûÇ©ÃûÉú³ÉËã·¨
      * @param string $value
      **/
     public function SetSign()
     {
         $sign = $this->MakeSign();
-        $this->values['sign'] = $sign;
+        $this->values['desc'] = $sign;
         return $sign;
     }
 
+
     /**
-     * ç”Ÿæˆç­¾å
-     * @return ç­¾åï¼Œæœ¬å‡½æ•°ä¸è¦†ç›–signæˆå‘˜å˜é‡ï¼Œå¦‚è¦è®¾ç½®ç­¾åéœ€è¦è°ƒç”¨SetSignæ–¹æ³•èµ‹å€¼
+     * Éú³ÉÇ©Ãû
+     * @return Ç©Ãû£¬±¾º¯Êı²»¸²¸Çsign³ÉÔ±±äÁ¿£¬ÈçÒªÉèÖÃÇ©ÃûĞèÒªµ÷ÓÃSetSign·½·¨¸³Öµ
      */
     public function MakeSign()
     {
-        //ç­¾åæ­¥éª¤ä¸€ï¼šæŒ‰å­—å…¸åºæ’åºå‚æ•°
+        //Ç©Ãû²½ÖèÒ»£º°´×ÖµäĞòÅÅĞò²ÎÊı
         ksort($this->values);
         $string = $this->ToUrlParams();
-        //ç­¾åæ­¥éª¤äºŒï¼šåœ¨stringååŠ å…¥KEY
+        //Ç©Ãû²½Öè¶ş£ºÔÚstringºó¼ÓÈëKEY
         $string = $string . "&key=".C('Wx.key');
-        //ç­¾åæ­¥éª¤ä¸‰ï¼šMD5åŠ å¯†
+        //Ç©Ãû²½ÖèÈı£ºMD5¼ÓÃÜ
         $string = md5($string);
-        //ç­¾åæ­¥éª¤å››ï¼šæ‰€æœ‰å­—ç¬¦è½¬ä¸ºå¤§å†™
+        //Ç©Ãû²½ÖèËÄ£ºËùÓĞ×Ö·û×ªÎª´óĞ´
         $result = strtoupper($string);
         return $result;
     }
 
     /**
-     * è·å–ç­¾åï¼Œè¯¦è§ç­¾åç”Ÿæˆç®—æ³•çš„å€¼
-     * @return å€¼
+     * »ñÈ¡Ç©Ãû£¬Ïê¼ûÇ©ÃûÉú³ÉËã·¨µÄÖµ
+     * @return Öµ
      **/
     public function GetSign()
     {
@@ -177,8 +180,8 @@ class WxRedPack
     }
 
     /**
-     * åˆ¤æ–­ç­¾åï¼Œè¯¦è§ç­¾åç”Ÿæˆç®—æ³•æ˜¯å¦å­˜åœ¨
-     * @return true æˆ– false
+     * ÅĞ¶ÏÇ©Ãû£¬Ïê¼ûÇ©ÃûÉú³ÉËã·¨ÊÇ·ñ´æÔÚ
+     * @return true »ò false
      **/
     public function IsSignSet()
     {
@@ -186,7 +189,7 @@ class WxRedPack
     }
 
     /**
-     * è¾“å‡ºxmlå­—ç¬¦
+     * Êä³öxml×Ö·û
      * @throws WxPayException
      **/
     public function ToXml()
@@ -194,7 +197,7 @@ class WxRedPack
         if(!is_array($this->values)
             || count($this->values) <= 0)
         {
-            throw new WxPayException("æ•°ç»„æ•°æ®å¼‚å¸¸ï¼");
+            throw new WxPayException("Êı×éÊı¾İÒì³££¡");
         }
 
         $xml = "<xml>";
@@ -211,24 +214,24 @@ class WxRedPack
     }
 
     /**
-     * å°†xmlè½¬ä¸ºarray
+     * ½«xml×ªÎªarray
      * @param string $xml
      * @throws WxPayException
      */
     public function FromXml($xml)
     {
         if(!$xml){
-            throw new WxPayException("xmlæ•°æ®å¼‚å¸¸ï¼");
+            throw new WxPayException("xmlÊı¾İÒì³££¡");
         }
-        //å°†XMLè½¬ä¸ºarray
-        //ç¦æ­¢å¼•ç”¨å¤–éƒ¨xmlå®ä½“
+        //½«XML×ªÎªarray
+        //½ûÖ¹ÒıÓÃÍâ²¿xmlÊµÌå
         libxml_disable_entity_loader(true);
         $this->values = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
         return $this->values;
     }
 
     /**
-     * æ ¼å¼åŒ–å‚æ•°æ ¼å¼åŒ–æˆurlå‚æ•°
+     * ¸ñÊ½»¯²ÎÊı¸ñÊ½»¯³Éurl²ÎÊı
      */
     public function ToUrlParams()
     {
@@ -246,9 +249,9 @@ class WxRedPack
 
     /**
      *
-     * äº§ç”Ÿéšæœºå­—ç¬¦ä¸²ï¼Œä¸é•¿äº32ä½
+     * ²úÉúËæ»ú×Ö·û´®£¬²»³¤ÓÚ32Î»
      * @param int $length
-     * @return äº§ç”Ÿçš„éšæœºå­—ç¬¦ä¸²
+     * @return ²úÉúµÄËæ»ú×Ö·û´®
      */
     public static function getNonceStr($length = 32)
     {
@@ -261,21 +264,21 @@ class WxRedPack
     }
 
     /**
-     * ä»¥postæ–¹å¼æäº¤xmlåˆ°å¯¹åº”çš„æ¥å£url
+     * ÒÔpost·½Ê½Ìá½»xmlµ½¶ÔÓ¦µÄ½Ó¿Úurl
      *
-     * @param string $xml  éœ€è¦postçš„xmlæ•°æ®
+     * @param string $xml  ĞèÒªpostµÄxmlÊı¾İ
      * @param string $url  url
-     * @param bool $useCert æ˜¯å¦éœ€è¦è¯ä¹¦ï¼Œé»˜è®¤ä¸éœ€è¦
-     * @param int $second   urlæ‰§è¡Œè¶…æ—¶æ—¶é—´ï¼Œé»˜è®¤30s
+     * @param bool $useCert ÊÇ·ñĞèÒªÖ¤Êé£¬Ä¬ÈÏ²»ĞèÒª
+     * @param int $second   urlÖ´ĞĞ³¬Ê±Ê±¼ä£¬Ä¬ÈÏ30s
      * @throws WxPayException
      */
     private function postXmlCurl($xml, $url, $useCert = false, $second = 30)
     {
         $ch = curl_init();
-        //è®¾ç½®è¶…æ—¶
+        //ÉèÖÃ³¬Ê±
         curl_setopt($ch, CURLOPT_TIMEOUT, $second);
 
-        //å¦‚æœæœ‰é…ç½®ä»£ç†è¿™é‡Œå°±è®¾ç½®ä»£ç†
+        //Èç¹ûÓĞÅäÖÃ´úÀíÕâÀï¾ÍÉèÖÃ´úÀí
         if(C('Wx.CURL_PROXY_HOST') != "0.0.0.0"
             && C('Wx.CURL_PROXY_PORT') != 0){
             curl_setopt($ch,CURLOPT_PROXY, C('Wx.CURL_PROXY_HOST'));
@@ -283,33 +286,33 @@ class WxRedPack
         }
         curl_setopt($ch,CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,TRUE);
-        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,2);//ä¸¥æ ¼æ ¡éªŒ
-        //è®¾ç½®header
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,2);//ÑÏ¸ñĞ£Ñé
+        //ÉèÖÃheader
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        //è¦æ±‚ç»“æœä¸ºå­—ç¬¦ä¸²ä¸”è¾“å‡ºåˆ°å±å¹•ä¸Š
+        //ÒªÇó½á¹ûÎª×Ö·û´®ÇÒÊä³öµ½ÆÁÄ»ÉÏ
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
         if($useCert == true){
-            //è®¾ç½®è¯ä¹¦
-            //ä½¿ç”¨è¯ä¹¦ï¼šcert ä¸ key åˆ†åˆ«å±äºä¸¤ä¸ª.pemæ–‡ä»¶
+            //ÉèÖÃÖ¤Êé
+            //Ê¹ÓÃÖ¤Êé£ºcert Óë key ·Ö±ğÊôÓÚÁ½¸ö.pemÎÄ¼ş
             curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
             curl_setopt($ch,CURLOPT_SSLCERT, C('Wx.SSLCERT_PATH'));
             curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
             curl_setopt($ch,CURLOPT_SSLKEY, C('Wx.SSLKEY_PATH'));
         }
-        //postæäº¤æ–¹å¼
+        //postÌá½»·½Ê½
         curl_setopt($ch, CURLOPT_POST, TRUE);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
-        //è¿è¡Œcurl
+        //ÔËĞĞcurl
         $data = curl_exec($ch);
-        //è¿”å›ç»“æœ
+        //·µ»Ø½á¹û
         if($data){
             curl_close($ch);
             return $data;
         } else {
             $error = curl_errno($ch);
             curl_close($ch);
-            throw new WxPayException("curlå‡ºé”™ï¼Œé”™è¯¯ç :$error");
+            throw new WxPayException("curl³ö´í£¬´íÎóÂë:$error");
         }
     }
 }

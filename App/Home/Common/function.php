@@ -23,3 +23,16 @@ function createTradeNum(){
     }
     return $trade;
 }
+
+/**
+ *返回微信付款订单号
+ * @return string 订单号
+ */
+function createBizPayNum(){
+    $trade = date('YmdHis').rand(0,9).rand(0,9).rand(0,9);
+    $map['trade'] = $trade;
+    if(M('pack')->where($map)->find()){
+        $trade = createTradeNum();
+    }
+    return $trade;
+}

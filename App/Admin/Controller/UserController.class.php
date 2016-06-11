@@ -30,7 +30,6 @@ class UserController extends CommonController
         }
         $this->assign('name',$name);
 
-        $M = M('user');
         $order = 'uid desc';
         $this->getData('user',$map,$order,'uid,headimgurl,nickname,vip,money');
         $this->assign('Status',C('UserStatue'));
