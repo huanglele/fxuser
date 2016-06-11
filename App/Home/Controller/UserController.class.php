@@ -192,7 +192,7 @@ class UserController extends Controller
      */
     public function pay(){
         if(isset($_POST['money'])){
-            $money = I('post.money',0,'number_float');
+            $money = I('post.money',0);
             if($money>0){
                 $body = '充值';
                 $attach = '充值';
@@ -203,7 +203,7 @@ class UserController extends Controller
                 $order = $Pay->pay($openId,$body,$attach,$trade_no,$money*100,$tag);
                 if($order['result_code']=='SUCCESS'){//生成订单信息成功
                     $data['uid'] = $this->uid;
-                    $data['create_time'] = time();
+                    $data['create_time'] = date('Y-m-d H:i:s');
                     $data['money'] = $money;
                     $data['pid'] = $trade_no;
                     $data['status'] = 1;
