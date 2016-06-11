@@ -36,7 +36,7 @@ class CommonController extends Controller
      */
     private function checkRole(){
         if($this->role == 2){
-            $accessController = array('index','order');
+            $accessController = array('index','order','common');
             $c = strtolower(CONTROLLER_NAME);
             if(!in_array($c,$accessController)){
                 $this->error('没有操作权限');die;

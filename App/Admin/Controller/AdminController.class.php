@@ -121,6 +121,7 @@ class AdminController extends CommonController
             $data['password'] = md5($pwd);
             $data['time'] = time();
             $data['role'] = $role;
+            $data['city'] = $city;
             if($M->add($data)){
                 $this->success('添加成功');
             }else{

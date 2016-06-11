@@ -50,7 +50,17 @@ class UserController extends CommonController
             $teamNum = $this->getCount('user',$map);
             $this->assign('teamNum',$teamNum);
         }
+        $this->assign('VipMap',S('VipMap'));
         $this->display('detail');
+    }
+
+    /**
+     * 更新一个用户的等级
+     */
+    public function update(){
+        $data = $_POST;
+        M('user')->save($data);
+        $this->success('操作成功');
     }
 
 }
