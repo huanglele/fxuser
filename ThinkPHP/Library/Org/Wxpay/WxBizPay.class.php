@@ -2,7 +2,7 @@
 /**
  * Author: huanglele
  * Date: 2016/6/11
- * Time: ÏÂÎç 11:55
+ * Time: ä¸‹åˆ 11:55
  * Description:
  */
 
@@ -19,16 +19,16 @@ class WxBizPay
     }
 
     /**
-     * ·¢ËÍÆóÒµ¸¶¿î
-     * @param $data ĞèÒªµÄ²ÎÊıÊı×é
-     * @return array Ö´ĞĞµÄ½á¹û¼¯
+     * å‘é€ä¼ä¸šä»˜æ¬¾
+     * @param $data éœ€è¦çš„å‚æ•°æ•°ç»„
+     * @return array æ‰§è¡Œçš„ç»“æœé›†
      * @throws WxPayException
      */
     public function send($data){
-        $this->values['mch_appid'] = C('Wx.AppID');     //¹«ÖÚÕËºÅID
-        $this->values['mchid'] = C('Wx.mch_id');     //Î¢ĞÅÖ§¸¶·ÖÅäµÄÉÌ»§ºÅ
-        $this->values['spbill_create_ip'] = $_SERVER['REMOTE_ADDR'];     //µ÷ÓÃ½Ó¿ÚµÄ»úÆ÷IpµØÖ·
-        $this->values['check_name'] = 'NO_CHECK';     //NO_CHECK£º²»Ğ£ÑéÕæÊµĞÕÃû FORCE_CHECK£ºÇ¿Ğ£ÑéÕæÊµĞÕÃû
+        $this->values['mch_appid'] = C('Wx.AppID');     //å…¬ä¼—è´¦å·ID
+        $this->values['mchid'] = C('Wx.mch_id');     //å¾®ä¿¡æ”¯ä»˜åˆ†é…çš„å•†æˆ·å·
+        $this->values['spbill_create_ip'] = $_SERVER['REMOTE_ADDR'];     //è°ƒç”¨æ¥å£çš„æœºå™¨Ipåœ°å€
+        $this->values['check_name'] = 'NO_CHECK';     //NO_CHECKï¼šä¸æ ¡éªŒçœŸå®å§“å FORCE_CHECKï¼šå¼ºæ ¡éªŒçœŸå®å§“å
         if(is_array($data)){
             foreach($data as $k=>$v){
                 $this->values[$k] = $v;
@@ -44,9 +44,9 @@ class WxBizPay
     }
 
     /**
-     * ²éÑ¯Ò»¸öÆóÒµ¸¶¿î×´Ì¬
-     * @param $mch_billno ÉÌ»§·¢·Åºì°üµÄÉÌ»§¶©µ¥ºÅ
-     * @return array Ö´ĞĞ½á¹û¼¯
+     * æŸ¥è¯¢ä¸€ä¸ªä¼ä¸šä»˜æ¬¾çŠ¶æ€
+     * @param $mch_billno å•†æˆ·å‘æ”¾çº¢åŒ…çš„å•†æˆ·è®¢å•å·
+     * @return array æ‰§è¡Œç»“æœé›†
      * @throws WxPayException
      */
     public function query($partner_trade_no){
@@ -64,7 +64,7 @@ class WxBizPay
 
 
     /**
-     * ÉèÖÃÎ¢ĞÅÖ§¸¶·ÖÅäµÄÉÌ»§ºÅ
+     * è®¾ç½®å¾®ä¿¡æ”¯ä»˜åˆ†é…çš„å•†æˆ·å·
      * @param string $value
      **/
     public function SetMch_id($value)
@@ -73,7 +73,7 @@ class WxBizPay
     }
 
     /**
-     * ÉèÖÃÎ¢ĞÅ·ÖÅäµÄ¹«ÖÚÕËºÅID
+     * è®¾ç½®å¾®ä¿¡åˆ†é…çš„å…¬ä¼—è´¦å·ID
      * @param string $value
      **/
     public function SetAppid($value)
@@ -82,14 +82,14 @@ class WxBizPay
     }
 
     /**
-     * ÉèÖÃ½ÓÊÜºì°üµÄÓÃ»§ÓÃ»§ÔÚwxappidÏÂµÄopenid
+     * è®¾ç½®æ¥å—çº¢åŒ…çš„ç”¨æˆ·ç”¨æˆ·åœ¨wxappidä¸‹çš„openid
      */
     public function SetOpenid($value){
         $this->values['openid'] = $value;
     }
 
     /**
-     * ÉèÖÃ¶©µ¥×Ü½ğ¶î£¬Ö»ÄÜÎªÕûÊı£¬Ïê¼ûÖ§¸¶½ğ¶î
+     * è®¾ç½®è®¢å•æ€»é‡‘é¢ï¼Œåªèƒ½ä¸ºæ•´æ•°ï¼Œè¯¦è§æ”¯ä»˜é‡‘é¢
      * @param string $value
      **/
     public function SetAmount($value)
@@ -98,14 +98,14 @@ class WxBizPay
     }
 
     /**
-     * ÉèÖÃÉÌ»§¶©µ¥ºÅ
+     * è®¾ç½®å•†æˆ·è®¢å•å·
      */
     public function SetTrade_no($value){
         $this->values['partner_trade_no'] = $value;
     }
 
     /**
-     *ÆóÒµ¸¶¿îÃèÊöĞÅÏ¢
+     *ä¼ä¸šä»˜æ¬¾æè¿°ä¿¡æ¯
      */
     public function SetDesc($value){
         $this->values['desc'] = $value;
@@ -113,7 +113,7 @@ class WxBizPay
 
 
     /**
-     * ÉèÖÃÇ©Ãû£¬Ïê¼ûÇ©ÃûÉú³ÉËã·¨
+     * è®¾ç½®ç­¾åï¼Œè¯¦è§ç­¾åç”Ÿæˆç®—æ³•
      * @param string $value
      **/
     public function SetSign()
@@ -125,26 +125,26 @@ class WxBizPay
 
 
     /**
-     * Éú³ÉÇ©Ãû
-     * @return Ç©Ãû£¬±¾º¯Êı²»¸²¸Çsign³ÉÔ±±äÁ¿£¬ÈçÒªÉèÖÃÇ©ÃûĞèÒªµ÷ÓÃSetSign·½·¨¸³Öµ
+     * ç”Ÿæˆç­¾å
+     * @return ç­¾åï¼Œæœ¬å‡½æ•°ä¸è¦†ç›–signæˆå‘˜å˜é‡ï¼Œå¦‚è¦è®¾ç½®ç­¾åéœ€è¦è°ƒç”¨SetSignæ–¹æ³•èµ‹å€¼
      */
     public function MakeSign()
     {
-        //Ç©Ãû²½ÖèÒ»£º°´×ÖµäĞòÅÅĞò²ÎÊı
+        //ç­¾åæ­¥éª¤ä¸€ï¼šæŒ‰å­—å…¸åºæ’åºå‚æ•°
         ksort($this->values);
         $string = $this->ToUrlParams();
-        //Ç©Ãû²½Öè¶ş£ºÔÚstringºó¼ÓÈëKEY
+        //ç­¾åæ­¥éª¤äºŒï¼šåœ¨stringååŠ å…¥KEY
         $string = $string . "&key=".C('Wx.key');
-        //Ç©Ãû²½ÖèÈı£ºMD5¼ÓÃÜ
+        //ç­¾åæ­¥éª¤ä¸‰ï¼šMD5åŠ å¯†
         $string = md5($string);
-        //Ç©Ãû²½ÖèËÄ£ºËùÓĞ×Ö·û×ªÎª´óĞ´
+        //ç­¾åæ­¥éª¤å››ï¼šæ‰€æœ‰å­—ç¬¦è½¬ä¸ºå¤§å†™
         $result = strtoupper($string);
         return $result;
     }
 
     /**
-     * »ñÈ¡Ç©Ãû£¬Ïê¼ûÇ©ÃûÉú³ÉËã·¨µÄÖµ
-     * @return Öµ
+     * è·å–ç­¾åï¼Œè¯¦è§ç­¾åç”Ÿæˆç®—æ³•çš„å€¼
+     * @return å€¼
      **/
     public function GetSign()
     {
@@ -152,8 +152,8 @@ class WxBizPay
     }
 
     /**
-     * ÅĞ¶ÏÇ©Ãû£¬Ïê¼ûÇ©ÃûÉú³ÉËã·¨ÊÇ·ñ´æÔÚ
-     * @return true »ò false
+     * åˆ¤æ–­ç­¾åï¼Œè¯¦è§ç­¾åç”Ÿæˆç®—æ³•æ˜¯å¦å­˜åœ¨
+     * @return true æˆ– false
      **/
     public function IsSignSet()
     {
@@ -161,7 +161,7 @@ class WxBizPay
     }
 
     /**
-     * Êä³öxml×Ö·û
+     * è¾“å‡ºxmlå­—ç¬¦
      * @throws WxPayException
      **/
     public function ToXml()
@@ -169,7 +169,7 @@ class WxBizPay
         if(!is_array($this->values)
             || count($this->values) <= 0)
         {
-            throw new WxPayException("Êı×éÊı¾İÒì³££¡");
+            throw new WxPayException("æ•°ç»„æ•°æ®å¼‚å¸¸ï¼");
         }
 
         $xml = "<xml>";
@@ -186,24 +186,24 @@ class WxBizPay
     }
 
     /**
-     * ½«xml×ªÎªarray
+     * å°†xmlè½¬ä¸ºarray
      * @param string $xml
      * @throws WxPayException
      */
     public function FromXml($xml)
     {
         if(!$xml){
-            throw new WxPayException("xmlÊı¾İÒì³££¡");
+            throw new WxPayException("xmlæ•°æ®å¼‚å¸¸ï¼");
         }
-        //½«XML×ªÎªarray
-        //½ûÖ¹ÒıÓÃÍâ²¿xmlÊµÌå
+        //å°†XMLè½¬ä¸ºarray
+        //ç¦æ­¢å¼•ç”¨å¤–éƒ¨xmlå®ä½“
         libxml_disable_entity_loader(true);
         $this->values = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
         return $this->values;
     }
 
     /**
-     * ¸ñÊ½»¯²ÎÊı¸ñÊ½»¯³Éurl²ÎÊı
+     * æ ¼å¼åŒ–å‚æ•°æ ¼å¼åŒ–æˆurlå‚æ•°
      */
     public function ToUrlParams()
     {
@@ -221,9 +221,9 @@ class WxBizPay
 
     /**
      *
-     * ²úÉúËæ»ú×Ö·û´®£¬²»³¤ÓÚ32Î»
+     * äº§ç”Ÿéšæœºå­—ç¬¦ä¸²ï¼Œä¸é•¿äº32ä½
      * @param int $length
-     * @return ²úÉúµÄËæ»ú×Ö·û´®
+     * @return äº§ç”Ÿçš„éšæœºå­—ç¬¦ä¸²
      */
     public static function getNonceStr($length = 32)
     {
@@ -236,21 +236,21 @@ class WxBizPay
     }
 
     /**
-     * ÒÔpost·½Ê½Ìá½»xmlµ½¶ÔÓ¦µÄ½Ó¿Úurl
+     * ä»¥postæ–¹å¼æäº¤xmlåˆ°å¯¹åº”çš„æ¥å£url
      *
-     * @param string $xml  ĞèÒªpostµÄxmlÊı¾İ
+     * @param string $xml  éœ€è¦postçš„xmlæ•°æ®
      * @param string $url  url
-     * @param bool $useCert ÊÇ·ñĞèÒªÖ¤Êé£¬Ä¬ÈÏ²»ĞèÒª
-     * @param int $second   urlÖ´ĞĞ³¬Ê±Ê±¼ä£¬Ä¬ÈÏ30s
+     * @param bool $useCert æ˜¯å¦éœ€è¦è¯ä¹¦ï¼Œé»˜è®¤ä¸éœ€è¦
+     * @param int $second   urlæ‰§è¡Œè¶…æ—¶æ—¶é—´ï¼Œé»˜è®¤30s
      * @throws WxPayException
      */
     private function postXmlCurl($xml, $url, $useCert = false, $second = 30)
     {
         $ch = curl_init();
-        //ÉèÖÃ³¬Ê±
+        //è®¾ç½®è¶…æ—¶
         curl_setopt($ch, CURLOPT_TIMEOUT, $second);
 
-        //Èç¹ûÓĞÅäÖÃ´úÀíÕâÀï¾ÍÉèÖÃ´úÀí
+        //å¦‚æœæœ‰é…ç½®ä»£ç†è¿™é‡Œå°±è®¾ç½®ä»£ç†
         if(C('Wx.CURL_PROXY_HOST') != "0.0.0.0"
             && C('Wx.CURL_PROXY_PORT') != 0){
             curl_setopt($ch,CURLOPT_PROXY, C('Wx.CURL_PROXY_HOST'));
@@ -258,33 +258,33 @@ class WxBizPay
         }
         curl_setopt($ch,CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
-        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);//ÑÏ¸ñĞ£Ñé
-        //ÉèÖÃheader
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);//ä¸¥æ ¼æ ¡éªŒ
+        //è®¾ç½®header
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        //ÒªÇó½á¹ûÎª×Ö·û´®ÇÒÊä³öµ½ÆÁÄ»ÉÏ
+        //è¦æ±‚ç»“æœä¸ºå­—ç¬¦ä¸²ä¸”è¾“å‡ºåˆ°å±å¹•ä¸Š
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
         if($useCert == true){
-            //ÉèÖÃÖ¤Êé
-            //Ê¹ÓÃÖ¤Êé£ºcert Óë key ·Ö±ğÊôÓÚÁ½¸ö.pemÎÄ¼ş
+            //è®¾ç½®è¯ä¹¦
+            //ä½¿ç”¨è¯ä¹¦ï¼šcert ä¸ key åˆ†åˆ«å±äºä¸¤ä¸ª.pemæ–‡ä»¶
             curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
             curl_setopt($ch,CURLOPT_SSLCERT, C('Wx.SSLCERT_PATH'));
             curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
             curl_setopt($ch,CURLOPT_SSLKEY, C('Wx.SSLKEY_PATH'));
         }
-        //postÌá½»·½Ê½
+        //postæäº¤æ–¹å¼
         curl_setopt($ch, CURLOPT_POST, TRUE);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
-        //ÔËĞĞcurl
+        //è¿è¡Œcurl
         $data = curl_exec($ch);
-        //·µ»Ø½á¹û
+        //è¿”å›ç»“æœ
         if($data){
             curl_close($ch);
             return $data;
         } else {
             $error = curl_errno($ch);
             curl_close($ch);
-            throw new WxPayException("curl³ö´í£¬´íÎóÂë:$error");
+            throw new WxPayException("curlå‡ºé”™ï¼Œé”™è¯¯ç :$error");
         }
     }
 }
