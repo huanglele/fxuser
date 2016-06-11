@@ -11,3 +11,15 @@ function isLogin(){
     if($uid)return true;
     else return false;
 }
+
+/**
+ *返回微信支付订单号
+ * @return string 订单号
+ */
+function createTradeNum(){
+    $trade = date('YmdHis').rand(0,9).rand(0,9).rand(0,9);
+    if(M('Pay')->find($trade)){
+        $trade = createTradeNum();
+    }
+    return $trade;
+}
