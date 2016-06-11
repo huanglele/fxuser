@@ -16,17 +16,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-3">
-            <div class="form-group">
-                <div class="input-group">
-                    <select class="form-control" name="status">
-                        <option value="0">全部</option>
-                        <option value="1">待支付</option>
-                        <option value="2">已支付</option>
-                    </select>
-                </div>
-            </div>
-        </div>
         <div class="col-xs-2 ">
             <button type="submit" class="btn btn-primary">搜索</button>
         </div>
@@ -58,7 +47,6 @@
                     <td><{$vo.pid}></td>
                     <td><a href="<{:U('user/detail')}>?uid=<{$vo.uid}>" target="_blank" ><{$vo.uid}></a></td>
                     <td><{$vo.pay_time}></td>
-                    <td><{$vo.money}></td>
                     <td><{$vo['money']}></td>
                     <td><{$Status[$vo['status']]}></td>
                 </tr>
