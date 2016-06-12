@@ -163,7 +163,7 @@ class UserController extends Controller
      * 我的链接
      */
     public function link(){
-
+        $this->display('link');
     }
 
     /**
@@ -177,7 +177,33 @@ class UserController extends Controller
      * 我的团队
      */
     public function team(){
-
+        $this->display('team');
+    }
+    /**
+     * 获取团队信息
+     */
+    public function getTeamList(){
+        $p = I('p',1,'number_int');
+        $type = I('get.type');
+        if($type=='up2'){
+            $map['up2'] = session('uid');
+        }else{
+            $map['up1'] = session('uid');
+        }
+        $list = $this->getData('user',$map,'uid desc','nickname,headimgurl,vip');
+        $num = count($list);
+        if($num){
+            $VipMap = S('VipMap');
+            for($i=0;$i<$num;$i++){
+                $list[$i]['vip'] = $VipMap[$list[$i]['vip']];
+            }
+        }
+        $ret['status'] = 'success';
+        $ret['num'] = $num;
+        $ret['list'] = $list;
+        if($num==10)  $p++;
+        $ret['page'] = $p;
+        $this->ajaxReturn($ret);
     }
 
     /**
@@ -288,6 +314,66 @@ class UserController extends Controller
         $this->assign('list',$list);
         $this->assign('page',$show);
         return $list;
+    }
+
+    /**
+     * 生成我的关注推广链接
+     */
+    public function myLinkPic(){
+        layout(false);
+        C('SHOW_PAGE_TRACE',false);
+        $qrImgPath = THINK_PATH.'../qrCodeImg/'.session('uid').'.jpg';
+        if(!is_file($qrImgPath)){
+            //没有自己的推广二维码
+            if(!$this->getQrCode()){
+                die('服务器出错');
+            }
+        }
+
+        header('Content-Type: image/jpeg');
+        $qr = imagecreatefromjpeg($qrImgPath);
+        $r = imagejpeg($qr);
+        imagedestroy($qr);
+    }
+
+    /**
+     * 返回个人微信推广二维码地址
+     */
+    private function getQrCode(){
+        $ticket = $this->getTicke();
+        if($ticket){
+            $qrUrl = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.urldecode($ticket);
+            $pic = myCurl($qrUrl);
+            $filePath = THINK_PATH.'../qrCodeImg/'.session('uid').'.jpg';
+            file_put_contents($filePath,$pic);
+            $image = new \Think\Image();
+            $image->open($filePath)->thumb(150,150)->save($filePath);
+            return true;
+        }else{
+            die('没有获取到了ticket');
+            return false;
+        }
+    }
+
+    /**
+     * http请求方式: POST
+     *   URL: https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKENPOST数据格式：json
+     *   POST数据例子：{"action_name": "QR_LIMIT_SCENE", "action_info": {"scene": {"scene_id": 123}}}
+     * 或者也可以使用以下POST数据创建字符串形式的二维码参数：
+     * {"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "123"}}}
+     */
+    private function getTicke(){
+        $url = 'https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.getWxAccessToken();
+        $data = '{"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "'.$this->uid.'"}}}';
+        $curlArr = array(CURLOPT_POSTFIELDS=>$data);
+        $res = json_decode(myCurl($url,$curlArr),true);
+        if(isset($res['ticket'])){
+            return $res['ticket'];
+        }else{
+            var_dump($res);
+            die();
+            return false;
+        }
     }
 
 }
