@@ -27,7 +27,7 @@
                         <eq name="vo.status" value="1"><a href="<{:U('user/openRedPack')}>?id=<{$vo.rid}>">领取</a></eq>
                     </li>
                     <li class="mui-table-view-cell">时间：<{$vo.time|Mydate}></li>
-                    <li class="mui-table-view-cell">领取等级：<{$VipMap[$vo.price]}></li>
+                    <li class="mui-table-view-cell">领取等级：<{$VipMap[$vo['price']]}></li>
                     <li class="mui-table-view-cell"><{$vo.note}></li>
                 </ul>
             </li>
