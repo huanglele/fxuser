@@ -38,7 +38,7 @@ function getWxUserInfo($openId){
  * @return mixed 微信凭证
  */
 function getWxAccessToken(){
-    $token = S('Wx-access_token');
+    /*$token = S('Wx-access_token');
     if(!$token){
         $Wx = C('Wx');
         $appId = $Wx['AppID'];
@@ -49,6 +49,14 @@ function getWxAccessToken(){
         $token = $data['access_token'];
         S('Wx-access_token',$token,$data['expires_in']-1000);
     }
+    */
+    $Wx = C('Wx');
+    $appId = $Wx['AppID'];
+    $appSec = $Wx['AppSecret'];
+    $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appId&secret=$appSec";
+    $res = myCurl($url);
+    $data = json_decode($res,true);
+    $token = $data['access_token'];
     return $token;
 }
 
