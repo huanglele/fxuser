@@ -346,8 +346,6 @@ class UserController extends Controller
             $pic = myCurl($qrUrl);
             $filePath = THINK_PATH.'../qrCodeImg/'.session('uid').'.jpg';
             file_put_contents($filePath,$pic);
-            $image = new \Think\Image();
-            $image->open($filePath)->thumb(150,150)->save($filePath);
             return true;
         }else{
             die('没有获取到了ticket');
@@ -370,8 +368,6 @@ class UserController extends Controller
         if(isset($res['ticket'])){
             return $res['ticket'];
         }else{
-            var_dump($res);
-            die();
             return false;
         }
     }
