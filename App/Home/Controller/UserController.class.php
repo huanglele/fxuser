@@ -250,7 +250,7 @@ class UserController extends Controller
                 $data['openid'] = session('openid');
                 $data['amount'] = $money*100;
                 $data['partner_trade_no'] = createBizPayNum();
-                $data['desc'] = '企业付款操作说明信息。必填。';
+                $data['desc'] = '提现操作';
                 $res = $Pay->send($data);
                 if($res['result_code']=='SUCCESS'){//生成订单信息成功
                     $data['uid'] = $uid;
@@ -270,6 +270,7 @@ class UserController extends Controller
                 $this->error('输入金额有误');
             }
         }else{
+            $this->getData('pack',array('uid'=>session('uid'),'status'=>2),'pid desc');
             $this->display('getCash');
         }
     }
