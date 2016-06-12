@@ -67,7 +67,7 @@
     <ul class="mui-table-view mui-grid-view mui-grid-9">
         <li class="mui-table-view-cell mui-media mui-col-xs-4">
             <a href="#">
-                <span>0</span>
+                <span><{$team}></span>
                 <div class="">我的下属</div></a>
         </li>
         <li class="mui-table-view-cell mui-media mui-col-xs-4">
@@ -76,8 +76,8 @@
                 <div class="">账户余额</div></a>
         </li>
         <li class="mui-table-view-cell mui-media mui-col-xs-4">
-            <a href="#">
-                <span>0</span>
+            <a href="<{:U('user/redpack')}>">
+                <span><{$Pack}><gt name="PackL" value="0"><span class="mui-badge mui-badge-danger mui-badge-inverted"><{$PackL}></span></gt></span>
                 <div class="">我的红包</div></a>
         </li>
     </ul>
@@ -111,6 +111,14 @@
             <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4"><a href="<{:U('user/order')}>">
                 <span class="mui-icon iconfont icon-order"></span>
                 <div class="mui-media-body">我的订单</div></a></li>
+
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4"><a href="<{:U('index/index')}>">
+                <span class="mui-icon iconfont icon-vip"></span>
+                <div class="mui-media-body">升级会员</div></a></li>
+
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4"><a href="<{:U('user/redpack')}>">
+                <span class="mui-icon iconfont icon-redpack"></span>
+                <div class="mui-media-body">我的红包</div></a></li>
         </ul>
     </div>
 

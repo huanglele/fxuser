@@ -25,6 +25,15 @@ class UserController extends Controller
         $info = M('user')->find($uid);
         $this->assign('info',$info);
         $this->assign('VipMap',S('VipMap'));
+
+        $mapUser['up1|up2'] = session('uid');
+        $this->assign('team',$this->getCount('user',$mapUser));
+
+        $mapR['uid'] = session('uid');
+        $this->assign('Pack',$this->getCount('reward',$mapR));
+        $mapR['status'] = 1;
+        $this->assign('PackL',$this->getCount('reward',$mapR));
+
         $this->display('index');
     }
 
@@ -165,6 +174,25 @@ class UserController extends Controller
     public function link(){
         $this->display('link');
     }
+    /**
+     * 生成我的关注推广链接
+     */
+    public function myLinkPic(){
+        layout(false);
+        C('SHOW_PAGE_TRACE',false);
+        $qrImgPath = THINK_PATH.'../qrCodeImg/'.session('uid').'.jpg';
+        if(!is_file($qrImgPath)){
+            //没有自己的推广二维码
+            if(!$this->getQrCode()){
+                die('服务器出错');
+            }
+        }
+
+        header('Content-Type: image/jpeg');
+        $qr = imagecreatefromjpeg($qrImgPath);
+        $r = imagejpeg($qr);
+        imagedestroy($qr);
+    }
 
     /**
      * 代理
@@ -223,6 +251,23 @@ class UserController extends Controller
         }
         $this->display('order');
     }
+
+    /**
+     * 我的红包
+     */
+    public function redpack(){
+        $map['uid'] = session('uid');
+        $status = I('get.status');
+        if($status){
+            $map['status'] = $status;
+        }
+
+        $this->getData('reward',$map,'uid desc');
+        $this->assign('Status',C('RewardStatus'));
+        $this->assign('Type',C('RewardType'));
+        $this->display('redpack');
+    }
+
 
     /**
      * 微信支付
@@ -316,25 +361,6 @@ class UserController extends Controller
         return $list;
     }
 
-    /**
-     * 生成我的关注推广链接
-     */
-    public function myLinkPic(){
-        layout(false);
-        C('SHOW_PAGE_TRACE',false);
-        $qrImgPath = THINK_PATH.'../qrCodeImg/'.session('uid').'.jpg';
-        if(!is_file($qrImgPath)){
-            //没有自己的推广二维码
-            if(!$this->getQrCode()){
-                die('服务器出错');
-            }
-        }
-
-        header('Content-Type: image/jpeg');
-        $qr = imagecreatefromjpeg($qrImgPath);
-        $r = imagejpeg($qr);
-        imagedestroy($qr);
-    }
 
     /**
      * 返回个人微信推广二维码地址
@@ -370,6 +396,15 @@ class UserController extends Controller
         }else{
             return false;
         }
+    }
+
+    /**
+     * @param $table 表名
+     * @param $map 条件
+     * @return number 统计数据
+     */
+    private function getCount($table,$map){
+        return M($table)->where($map)->count();
     }
 
 }
