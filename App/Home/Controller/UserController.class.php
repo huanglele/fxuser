@@ -364,7 +364,7 @@ class UserController extends Controller
      */
     private function getTicke(){
         $url = 'https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.getWxAccessToken();
-        $data = '{"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "'.$this->uid.'"}}}';
+        $data = '{"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "'.session('uid').'"}}}';
         $curlArr = array(CURLOPT_POSTFIELDS=>$data);
         $res = json_decode(myCurl($url,$curlArr),true);
         if(isset($res['ticket'])){
