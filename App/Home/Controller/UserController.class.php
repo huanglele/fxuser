@@ -184,7 +184,18 @@ class UserController extends Controller
      * 我的订单
      */
     public function order(){
-
+        $map['uid'] = session('uid');
+        $list = $this->getData('order',$map,'oid desc');
+        $gids[] = 0;
+        if(count($list)){
+            foreach($list as $v){
+                $gids[] = $v['gid'];
+            }
+            $gInfo = M('goods')->where(array('gid'=>array('in',$gids)))->getField('gid,name,img');
+            $this->assign('gInfo',$gInfo);
+            $this->assign('CityCode',C('CityCode'));
+        }
+        $this->display('order');
     }
 
     /**
@@ -222,21 +233,60 @@ class UserController extends Controller
                 $this->error('输入金额有误');
             }
         }else{
+            $this->getData('pay',array('uid'=>session('uid'),'status'=>2),'pid desc');
             $this->display('pay');
         }
     }
 
     /**
-     *
+     *显示提现记录
      */
     public function getCash(){
-        $Pay = new \Org\Wxpay\WxBizPay();
-        $data['openid'] = session('openid');
-        $data['amount'] = 100;
-        $data['partner_trade_no'] = createBizPayNum();
-        $data['desc'] = '企业付款操作说明信息。必填。';
-        $res = $Pay->send($data);
-        var_dump($res);
+        if(isset($_POST['money'])){
+            $money = I('post.money',0);
+            $uid = session('uid');
+            if($money>0){
+                $Pay = new \Org\Wxpay\WxBizPay();
+                $data['openid'] = session('openid');
+                $data['amount'] = $money*100;
+                $data['partner_trade_no'] = createBizPayNum();
+                $data['desc'] = '企业付款操作说明信息。必填。';
+                $res = $Pay->send($data);
+                if($res['result_code']=='SUCCESS'){//生成订单信息成功
+                    $data['uid'] = $uid;
+                    $data['time'] = date('Y-m-d H:i:s');
+                    $data['money'] = $money;
+                    $data['trade'] = $data['partner_trade_no'];
+                    $data['status'] = 2;
+                    if(M('pack')->add($data)){
+                        $this->success('提现成功',U('user'));
+                    }else{
+                        $this->error('操作失败请重试');die;
+                    }
+                }else{
+                    $this->error('操作失败请重试');die;
+                }
+            }else{
+                $this->error('输入金额有误');
+            }
+        }else{
+            $this->display('getCash');
+        }
+    }
+
+    protected function getData($table,$map,$order,$field=false){
+        $M = M($table);
+        $count = $M->where($map)->count();
+        $Page = new \Think\Page($count,10);
+        $show = $Page->show();
+        if($field){
+            $list = $M->where($map)->field($field)->order($order)->limit($Page->firstRow,$Page->listRows)->select();
+        }else{
+            $list = $M->where($map)->order($order)->limit($Page->firstRow,$Page->listRows)->select();
+        }
+        $this->assign('list',$list);
+        $this->assign('page',$show);
+        return $list;
     }
 
 }
