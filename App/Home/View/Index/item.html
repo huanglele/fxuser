@@ -317,7 +317,7 @@
     createSheng = function(){
         var op = '';
         $.each(city,function(i,n){
-            op += '<option value="'+i+'">'+ n.text+'</option>';
+            op += '<option value="'+ i.value+'">'+ n.text+'</option>';
         })
         $('select[name="sheng"]').html(op);
         createShi();
@@ -328,7 +328,7 @@
 
     createShi = function(){
         var op = '';
-        var sheng = $('select[name="sheng"]').val();
+        var sheng = $('select[name="sheng"] option:selected').index();
         $.each(city[sheng].children,function(i,n){
             op += '<option value="'+ n.value+'">'+ n.text+'</option>';
         })

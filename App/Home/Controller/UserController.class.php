@@ -158,15 +158,22 @@ class UserController extends Controller
      * 我的资料
      */
     public function self(){
+        $uid = session('uid');
+        $info = M('user')->find($uid);
+        $this->assign('info',$info);
+        $this->assign('VipMap',S('VipMap'));
 
+        $mapUser['up1|up2'] = session('uid');
+        $this->assign('team',$this->getCount('user',$mapUser));
+
+        $mapR['uid'] = session('uid');
+        $this->assign('Pack',$this->getCount('reward',$mapR));
+        $mapR['status'] = 1;
+        $this->assign('PackL',$this->getCount('reward',$mapR));
+
+        $this->display('self');
     }
 
-    /**
-     * 我的余额
-     */
-    public function money(){
-
-    }
 
     /**
      * 我的链接
@@ -284,8 +291,8 @@ class UserController extends Controller
                 $myVip = M('user')->where($mapU)->getField('vip');
                 if($info['price']>$myVip){$this->error('你的等级不够',U('index/index'));die;}
                 M('user')->where($map)->setInc('money',$info['money']);
-                M('reward')->where($map)->setInc('status',2);
-                $this->success('领取成功',U('user/redpack'));
+                M('reward')->where($map)->setField('status',2);
+                $this->success('领取成功',U('user/index'));
             }else{
                 $this->error('红包已领取',U('user/index'));
             }
