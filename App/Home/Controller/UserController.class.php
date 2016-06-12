@@ -106,7 +106,7 @@ class UserController extends Controller
             $allData = array();
             //给自己发红包
             $d1['money'] = $gInfo['self'];
-            $d1['note'] = '升级红包';
+            $d1['note'] = '自己的升级红包';
             $d1['type'] = 1;
             $d1['time'] = time();
             $d1['uid'] = $uid;
@@ -265,7 +265,33 @@ class UserController extends Controller
         $this->getData('reward',$map,'uid desc');
         $this->assign('Status',C('RewardStatus'));
         $this->assign('Type',C('RewardType'));
+        $this->assign('VipMap',S('VipMap'));
         $this->display('redpack');
+    }
+
+    /**
+     * 领取红包
+     */
+    public function openRedPack(){
+        $id = I('get.id');
+        $map['rid'] = $id;
+        $map['uid'] = session('uid');
+        $info = M('reward')->where($map)->find();
+        if($info){
+            if($info['status']=='1'){
+                //判断自己的等级
+                $mapU['uid'] = session('uid');
+                $myVip = M('user')->where($mapU)->getField('vip');
+                if($info['price']>$myVip){$this->error('你的等级不够',U('index/index'));die;}
+                M('user')->where($map)->setInc('money',$info['money']);
+                M('reward')->where($map)->setInc('status',2);
+                $this->success('领取成功',U('user/redpack'));
+            }else{
+                $this->error('红包已领取',U('user/index'));
+            }
+        }else{
+            $this->error('红包不存在',U('user/index'));
+        }
     }
 
 
