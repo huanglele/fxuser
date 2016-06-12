@@ -340,7 +340,7 @@ class UserController extends Controller
      * 返回个人微信推广二维码地址
      */
     private function getQrCode(){
-        $ticket = $this->getTicke();
+        $ticket = $this->getTicket();
         if($ticket){
             $qrUrl = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.urldecode($ticket);
             $pic = myCurl($qrUrl);
@@ -360,7 +360,7 @@ class UserController extends Controller
      * 或者也可以使用以下POST数据创建字符串形式的二维码参数：
      * {"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "123"}}}
      */
-    private function getTicke(){
+    private function getTicket(){
         $url = 'https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.getWxAccessToken();
         $data = '{"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "'.session('uid').'"}}}';
         $curlArr = array(CURLOPT_POSTFIELDS=>$data);
