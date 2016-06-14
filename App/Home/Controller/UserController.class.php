@@ -345,7 +345,7 @@ class UserController extends Controller
             $map['status'] = $status;
         }
 
-        $this->getData('reward',$map,'uid desc');
+        $this->getData('reward',$map,'rid desc');
         $this->assign('Status',C('RewardStatus'));
         $this->assign('Type',C('RewardType'));
         $this->assign('VipMap',S('VipMap'));
