@@ -177,7 +177,8 @@ function sendPackTempMsg($r){
     $arr['tradeDateTime'] = array('value'=>date('Y-m-d H:i',$r['time']),'color'=>'#173177');
     $arr['orderType'] = array('value'=>$r['type'],'color'=>'#173177');
     $arr['customerInfo'] = array('value'=>$r['note'],'color'=>'#173177');
-    $arr['orderItemName'] = array('value'=>$r['money'].'￥','color'=>'#173177');
+    $arr['orderItemName'] = array('value'=>'红包金额','color'=>'#173177');
+    $arr['orderItemData'] = array('value'=>$r['money'].'￥','color'=>'#173177');
     $arr['remark'] = array('value'=>'详情请登陆官网查看','color'=>'#173177');
     $data['data'] = $arr;
     $post = json_encode($data,true);

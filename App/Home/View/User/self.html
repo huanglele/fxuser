@@ -15,7 +15,59 @@
     <h1 class="mui-title">我的信息</h1>
 </header>
 <div class="mui-content">
+    <ul class="mui-table-view">
+        <li class="mui-table-view-divider">基本信息</li>
+        <li class="mui-table-view-cell">
+            昵称<span class="mui-pull-right"><{$info.nickname}></span>
+        </li>
+        <li class="mui-table-view-cell">
+            等级<span class="mui-pull-right"><{$VipMap[$info['vip']]}></span>
+        </li>
+        <li class="mui-table-view-cell">
+            账户余额<span class="mui-pull-right"><{$info['money']}></span>
+        </li>
 
+        <li class="mui-table-view-divider">红包信息</li>
+        <li class="mui-table-view-cell">
+            <a href="<{:U('user/redpack')}>" class="mui-navigate-right">
+                <span class="mui-badge mui-badge-success"><{$Pack}></span>
+                红包总数
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+            <a href="<{:U('user/redpack')}>?status=1" class="mui-navigate-right">
+                <span class="mui-badge mui-badge-success"><{$PackL}></span>
+                未领红包
+            </a>
+        </li>
+
+        <li class="mui-table-view-divider">我的团队</li>
+        <li class="mui-table-view-cell">
+            <a href="<{:U('user/team')}>" class="mui-navigate-right">
+                <span class="mui-badge mui-badge-success"><{$up1+$up2}></span>
+                总人数
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+            直属<span class="mui-pull-right"><{$up1}></span>
+        </li>
+        <li class="mui-table-view-cell">
+            间接<span class="mui-pull-right"><{$up2}></span>
+        </li>
+
+
+        <li class="mui-table-view-divider">代理信息</li>
+        <li class="mui-table-view-cell">
+            <a href="<{:U('user/agent')}>" class="mui-navigate-right">
+                <span class="mui-badge mui-badge-success"><eq name="info.agent" value="1">是<else/>否</eq></span>
+                我是代理
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+            我的代理ID<span class="mui-pull-right"><eq name="info.leader" value="1"><{[$info['leader']]}><else/>无</eq></span>
+        </li>
+
+    </ul>
 </div>
 </body>
 <script src="__PUBLIC__/js/mui.min.js"></script>

@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        设置用户升级代理条件
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" action="<{:U('applyTeam')}>" method="post" style="margin: 30px auto;">
+            <div class="row">
+                <div class="col-xs-5 col-sm-offset-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">会员价格</div>
+                            <input type="text" class="form-control" name="price" value="<{$info.price}>" placeholder="填写会员级别对应的价格" >
+                            <div class="input-group-addon">￥</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-offset-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">数量</div>
+                            <input type="password" class="form-control" name="num" value="<{$info.num}>" placeholder="添加数字" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-5 col-sm-offset-3">
+                    <button type="submit" style="width: 100%" name="submit" class="btn btn-success">修改</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

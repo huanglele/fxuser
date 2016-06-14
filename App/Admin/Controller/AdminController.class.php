@@ -132,6 +132,28 @@ class AdminController extends CommonController
         }
     }
 
+    /**
+     * 设置前台用户升级代理的条件
+     */
+    public function applyTeam(){
+        if(isset($_POST['submit'])){
+            S('ApplyTeam',$_POST);
+        }
+        $info = S('ApplyTeam');
+        $this->assign('info',$info);
+        $this->display('applyTeam');
+    }
 
+    /**
+     * 设置微信提现手续费
+     */
+    public function getCashRate(){
+        if(isset($_POST['submit'])){
+            S('getCashRate',$_POST);
+        }
+        $info = S('getCashRate');
+        $this->assign('info',$info);
+        $this->display('getCashRate');
+    }
 
 }

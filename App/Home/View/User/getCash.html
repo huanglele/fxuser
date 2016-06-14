@@ -18,9 +18,9 @@
     <div class="mui-content-padded">
         <form class="form-inline" method="post" action="<{:U('user/getCash')}>" >
             <div class="mui-input-row">
-                <input class="form-control" placeholder="填写金额" name="money" type="text" >
+                <input class="form-control" placeholder="余额<{$uMoney}>,最低提现<{$CashRate.money}>" name="money" type="text" >
             </div>
-            <button type="submit" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 0;">马上充值</button>
+            <button type="submit" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 0;">马上提现</button>
         </form>
     </div>
 
@@ -48,5 +48,30 @@
     mui.init({
         swipeBack:true //启用右滑关闭功能
     });
+    var rate = "<{$CashRate.rate}>";
+    var limit = "<{$CashRate.money}>";
+    var uMoney = <{$uMoney}>;
+    $(window).ready(function(){
+        $('form').submit(function(){
+            var v = $('input[name="money"]').val();
+            if(!isNaN(v)){
+                mui.toast('请填写正常的金额');return false;
+            }
+            if(v<limit){
+                mui.toast('不能低于最低提现金额');return false;
+            }
+            if(v>uMoney){
+                mui.toast('提现金额高于账户余额');return false;
+            }
+            var btnArray = ['是', '否'];
+            mui.confirm('提现将扣除'+rate+'%的手续费，确认？', '提现', btnArray, function(e) {
+                if (e.index == 0) {
+                    info.innerText = '你刚确认MUI是个好框架';
+                } else {
+                    info.innerText = 'MUI没有得到你的认可，继续加油'
+                }
+            })
+        })
+    })
 </script>
 </html>

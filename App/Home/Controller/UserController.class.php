@@ -41,6 +41,7 @@ class UserController extends Controller
      * 微信登录
      */
     public function login(){
+        $this->checkJump();
         $tools = new \Org\Wxpay\UserApi();
         $openId = $tools->GetOpenid();
         $wxInfo = $tools->getInfo();
@@ -64,17 +65,33 @@ class UserController extends Controller
         }
         $uInfo = $M->where(array('openid'=>$openId))->field('uid')->find();
         $uid = $uInfo['uid'];
-
+        $jump = session('jump');
+        if(!$jump){
+            $jump = 'user/index';
+        }
+        session('jump',null);
         if($uid){
             session('uid',$uid);
-            $this->redirect('user/index');
+            $this->redirect($jump);
         }else{
             //第一次登录 添加到用户表里面
             $data['money'] = $data['vip'] = $data['leader'] = $data['agent'] = $data['up1'] = $data['up2'] = 0;
             $r = $M->add($data);
             if($r){
                 session('uid',$r);
-                $this->redirect('user/index');
+                $this->redirect($jump);
+            }
+        }
+    }
+
+    public function checkJump(){
+        $referer = $_SERVER['HTTP_REFERER'];
+        $host = $_SERVER['HTTP_HOST'];
+        $patten = "/^http:\/\/$host(\/index.php)?(.*)$/i";
+        if(preg_match($patten,$referer,$arr)){
+            $uri = $arr[2];
+            if(!preg_match('/^user\/(.{0,3})login',$uri)){
+                session('jump',$referer);
             }
         }
     }
@@ -189,6 +206,11 @@ class UserController extends Controller
         $this->assign('Pack',$this->getCount('reward',$mapR));
         $mapR['status'] = 1;
         $this->assign('PackL',$this->getCount('reward',$mapR));
+
+        $mapUp1['up1'] = session('uid');
+        $this->assign('up1',$this->getCount('user',$mapUp1));
+        $mapUp2['up2'] = session('uid');
+        $this->assign('up2',$this->getCount('user',$mapUp2));
 
         $this->display('self');
     }
@@ -365,13 +387,17 @@ class UserController extends Controller
      *显示提现记录
      */
     public function getCash(){
+        $uid = session('uid');
+        $uMoney = M('user')->where(array('uid'=>$uid))->getField('money');
+        $CashRate = S('getCashRate');
+        if(!$CashRate) $CashRate = array('rate'=>10,'money'=>'100');
         if(isset($_POST['money'])){
             $money = I('post.money',0);
-            $uid = session('uid');
             if($money>0){
+                if($uMoney<$CashRate['money']){$this->error('低于提现最低金额');die;}
                 $Pay = new \Org\Wxpay\WxBizPay();
                 $data['openid'] = session('openid');
-                $data['amount'] = $money*100;
+                $data['amount'] = intval($money*(100-$CashRate['rate']));
                 $data['partner_trade_no'] = createBizPayNum();
                 $data['desc'] = '提现操作';
                 $res = $Pay->send($data);
@@ -382,6 +408,7 @@ class UserController extends Controller
                     $data['trade'] = $data['partner_trade_no'];
                     $data['status'] = 2;
                     if(M('pack')->add($data)){
+                        M('user')->where(array('uid'=>$uid))->setDec('money',$money);
                         $this->success('提现成功',U('user'));
                     }else{
                         $this->error('操作失败请重试');die;
@@ -393,6 +420,8 @@ class UserController extends Controller
                 $this->error('输入金额有误');
             }
         }else{
+            $this->assign('uMoney',$uMoney);
+            $this->assign('CashRate',$CashRate);
             $this->getData('pack',array('uid'=>session('uid'),'status'=>2),'pid desc');
             $this->display('getCash');
         }
