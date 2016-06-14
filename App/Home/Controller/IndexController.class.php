@@ -63,8 +63,8 @@ class IndexController extends Controller
     public function mean(){
         $b1 = array('name'=>'会员升级','sub_button'=>array(array('type'=>'view','name'=>'银牌会员','url'=>U('index/item',array('id'=>1),true,true)), array('type'=>'view','name'=>'白金会员','url'=>U('index/item',array('id'=>2),true,true)) , array('type'=>'view','name'=>'所以等级','url'=>U('index/index','',true,true)) ));
         $b2 = array('type'=>'view','name'=>'会员中心','url'=>U('user/index','',true,true));
-        $b3 = array('type'=>'view','name'=>'会员中心','url'=>U('user/link','',true,true));
-        $b = array($b1,$b2,$b3);
+        $b3 = array('type'=>'view','name'=>'我的推广','url'=>U('user/link','',true,true));
+        $b = array('button'=>array($b1,$b2,$b3));
         $m = json_encode($b,JSON_UNESCAPED_UNICODE);
         $accsee = getWxAccessToken();
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token=' . $accsee;
