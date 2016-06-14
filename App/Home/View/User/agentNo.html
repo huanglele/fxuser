@@ -33,6 +33,6 @@
     mui.init({
         swipeBack:true //启用右滑关闭功能
     });
-    mui('#progress').progressbar({progress:this.getAttribute("data-progress")}).show();
+    mui('#progress').progressbar({progress:mui('#progress').getAttribute("data-progress")}).show();
 </script>
 </html>
