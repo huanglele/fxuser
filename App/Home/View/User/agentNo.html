@@ -17,7 +17,7 @@
 <div class="mui-content">
     <div class="mui-content-padded">
         <p class="mui-title">当前进度</p>
-        <p id="progress" style="height: 20px;" class="mui-progressbar mui-progressbar-warning" data-progress="<{$num/$con['num']}>" ><span></span></p>
+        <p id="progress" style="height: 20px;" class="mui-progressbar mui-progressbar-warning"  ><span></span></p>
         <gt name="con.num" value="$num">
             <button type="button" class="mui-btn mui-btn-block" style="padding: 5px 0;background: #ccc; color: white;">还差<{$con['num']-$num}>个</button>
             <else />
@@ -33,6 +33,6 @@
     mui.init({
         swipeBack:true //启用右滑关闭功能
     });
-    mui('#progress').progressbar({progress:mui('#progress').getAttribute("data-progress")}).show();
+    mui('#progress').progressbar({progress:"<{$num/$con['num']*100}>"}).show();
 </script>
 </html>
