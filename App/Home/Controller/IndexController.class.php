@@ -65,7 +65,7 @@ class IndexController extends Controller
         $b2 = array('type'=>'view','name'=>'会员中心','url'=>U('user/index','',true,true));
         $b3 = array('type'=>'view','name'=>'会员中心','url'=>U('user/link','',true,true));
         $b = array($b1,$b2,$b3);
-        $m = json_encode($b);
+        $m = json_encode($b,JSON_UNESCAPED_UNICODE);
         $accsee = getWxAccessToken();
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token=' . $accsee;
         $data = array(
