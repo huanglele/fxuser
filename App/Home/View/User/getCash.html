@@ -48,10 +48,12 @@
     mui.init({
         swipeBack:true //启用右滑关闭功能
     });
-    var rate = "<{$CashRate.rate}>";
-    var limit = "<{$CashRate.money}>";
-    var uMoney = <{$uMoney}>;
+    rate = "<{$CashRate.rate}>";
+    limit = "<{$CashRate.money}>";
+    uMoney = <{$uMoney}>;
+
     $(window).ready(function(){
+
         $('form').submit(function(){
             var v = $('input[name="money"]').val();
             if(!isNaN(v)){
@@ -74,5 +76,7 @@
             return false;
         })
     })
+
+
 </script>
 </html>
