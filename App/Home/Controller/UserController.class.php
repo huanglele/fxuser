@@ -89,7 +89,7 @@ class UserController extends Controller
         if($gInfo && $gInfo['status']==1) {
             $data = $_POST;
             //查询账户里面的钱够不够
-            $uInfo = M('user')->where(array('uid'=>$uid))->field('up1,up2,leader,agent,money')->find();
+            $uInfo = M('user')->where(array('uid'=>$uid))->field('up1,up2,leader,agent,money,openid')->find();
             if($uInfo['money']<$gInfo['price']){$this->error('账户余额不足',U('user/pay'));die;}
             //扣钱 添加订单记录  发送红包
             $da1['uid'] = $uid;
@@ -113,6 +113,8 @@ class UserController extends Controller
             $d1['status'] = 1;
             $d1['price'] = $gInfo['price'];
             $allData[] = $d1;
+            $d1['openid'] = $uInfo['openid'];
+            $this->sendWxPackMsg($d1);
             if($uInfo['up1']){
                 //给直接上级
                 $d1['money'] = $gInfo['up1'];
@@ -123,6 +125,9 @@ class UserController extends Controller
                 $d1['status'] = 1;
                 $d1['price'] = $gInfo['price'];
                 $allData[] = $d1;
+                //获取用户的openid
+                $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up1']))->getField('openid');
+                $this->sendWxPackMsg($d1);
             }
             if($uInfo['up2']){
                 //给直接上级
@@ -134,6 +139,8 @@ class UserController extends Controller
                 $d1['status'] = 1;
                 $d1['price'] = $gInfo['price'];
                 $allData[] = $d1;
+                $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up1']))->getField('openid');
+                $this->sendWxPackMsg($d1);
             }
             if($uInfo['agent']){
                 //给leader发红包
@@ -145,6 +152,8 @@ class UserController extends Controller
                 $d1['status'] = 1;
                 $d1['price'] = $gInfo['price'];
                 $allData[] = $d1;
+                $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up1']))->getField('openid');
+                $this->sendWxPackMsg($d1);
             }
             M('reward')->addAll($allData);
             sendOrderTempMsg($oid);
@@ -152,6 +161,16 @@ class UserController extends Controller
         }else{
             $this->error('商品不存在');
         }
+    }
+
+    /**
+     * 发送领取红包红包消息
+     * @param $data
+     */
+    private function sendWxPackMsg($data){
+        $Type = C('RewardType');
+        $data['type'] = $Type[$data['type']];
+        sendPackTempMsg($data);
     }
 
     /**

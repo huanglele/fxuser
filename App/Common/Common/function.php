@@ -155,9 +155,6 @@ function sendOrderTempMsg($oid){
             $arr['tradeDateTime'] = array('value'=>date('Y-m-d H:i',$info['time']),'color'=>'#173177');
             $arr['orderType'] = array('value'=>$gInfo['name'],'color'=>'#173177');
             $arr['customerInfo'] = array('value'=>$info['uid'].'号会员','color'=>'#173177');
-            $arr['orderItemName'] = array('value'=>'城市','color'=>'#173177');
-            $CityCode = C('CityCode');
-            $arr['orderItemData'] = array('value'=>$CityCode[$info['city']],'color'=>'#173177');
             $arr['remark'] = array('value'=>'详情请登陆官网查看','color'=>'#173177');
             $data['data'] = $arr;
             $post = json_encode($data,true);
@@ -166,4 +163,25 @@ function sendOrderTempMsg($oid){
             return $res;
         }
     }
+}
+
+/**
+ * 发送领取红包微信模板消息
+ * @return mixed
+ */
+function sendPackTempMsg($r){
+    $data['touser'] = $r['openid'];
+    $data['template_id'] = 'xi33bic9in_xajYNvNChvOsWy7zMDDuRULX5xDHNhg0';
+    $data['url'] = U('user/redpack',array('status'=>1),true,true);
+    $arr['first'] = array('value'=>'您好,您收到了一个红包','color'=>'#173177');
+    $arr['tradeDateTime'] = array('value'=>date('Y-m-d H:i',$r['time']),'color'=>'#173177');
+    $arr['orderType'] = array('value'=>$r['type'],'color'=>'#173177');
+    $arr['customerInfo'] = array('value'=>$r['note'],'color'=>'#173177');
+    $arr['orderItemName'] = array('value'=>$r['money'].'￥','color'=>'#173177');
+    $arr['remark'] = array('value'=>'详情请登陆官网查看','color'=>'#173177');
+    $data['data'] = $arr;
+    $post = json_encode($data,true);
+    $url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.getWxAccessToken();
+    $res = myCurl($url,array(CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>$post));
+    return $res;
 }
