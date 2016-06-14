@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>领取红包</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="__PUBLIC__/css/mui.min.css">
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">领取红包</h1>
+</header>
+<div class="mui-content">
+    <ul class="mui-table-view mui-table-view-chevron">
+        <volist name="list" id="vo">
+            <li class="mui-table-view-cell mui-media mui-collapse">
+                <a class="mui-navigate-right">
+                    <{$info.money}>-<small><{$Status[$info['status']]}></small>
+                </a>
+                
+            </li>
+        </volist>
+    </ul>
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell">
+            类型：<{$Type[$info['type']]}>
+            <eq name="vo.status" value="1"><a class="mui-btn mui-btn-primary" href="<{:U('user/openRedPack')}>?id=<{$info.rid}>">领取</a></eq>
+        </li>
+        <li class="mui-table-view-cell">时间：<{$info.time|Mydate}></li>
+        <li class="mui-table-view-cell">领取等级：<{$VipMap[$info['price']]}></li>
+        <li class="mui-table-view-cell"><{$info.note}></li>
+
+    </ul>
+</div>
+</body>
+<script src="__PUBLIC__/js/mui.min.js"></script>
+<script>
+    mui.init({
+        swipeBack:true //启用右滑关闭功能
+    });
+</script>
+</html>

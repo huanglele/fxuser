@@ -352,6 +352,22 @@ class UserController extends Controller
         $this->display('redpack');
     }
 
+    public function packDetail(){
+        $id = I('get.id');
+        $map['rid'] = $id;
+        $map['uid'] = session('uid');
+        $info = M('reward')->where($map)->find();
+        if($info){
+            $this->getData('reward',$map,'rid desc');
+            $this->assign('Status',C('RewardStatus'));
+            $this->assign('Type',C('RewardType'));
+            $this->assign('VipMap',S('VipMap'));
+            $this->display('packDetail');
+        }else{
+            $this->error('红包不存在',U('user/index'));
+        }
+    }
+
     /**
      * 领取红包
      */
