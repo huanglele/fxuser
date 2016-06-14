@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>升级代理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="__PUBLIC__/css/mui.min.css">
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">升级代理</h1>
+</header>
+<div class="mui-content">
+    <div class="mui-content-padded">
+        <p class="mui-title">当前进度</p>
+        <p class="mui-progressbar mui-progressbar-warning" data-progress="<{$num/$con['num']}>" ><span></span></p>
+        <gt name="con.num" value="$num">
+            <button type="button" class="mui-btn mui-btn-block" style="padding: 5px 0;background: #ccc; color: white;">还差<{$con['num']-$num}>个</button>
+            <else />
+            <a href="<{:U('user/setApply')}>" class="mui-btn mui-btn-block mui-btn-danger" style="padding: 5px 0">马上升级</a>
+        </gt>
+        <p style="margin-top: 30px">你还不是代理</p>
+        <p>升级代理需要推荐<span class="mui-badge mui-badge-danger"><{$con.num}></span>个价值<span class="mui-badge mui-badge-purple"><{$con.price}></span>￥及以上等级的会员</p>
+    </div>
+</div>
+</body>
+<script src="__PUBLIC__/js/mui.min.js"></script>
+<script>
+    mui.init({
+        swipeBack:true //启用右滑关闭功能
+    });
+</script>
+</html>

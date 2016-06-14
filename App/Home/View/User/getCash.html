@@ -66,11 +66,12 @@
             var btnArray = ['是', '否'];
             mui.confirm('提现将扣除'+rate+'%的手续费，确认？', '提现', btnArray, function(e) {
                 if (e.index == 0) {
-                    info.innerText = '你刚确认MUI是个好框架';
+                    return true;
                 } else {
-                    info.innerText = 'MUI没有得到你的认可，继续加油'
+                    return false;
                 }
             })
+            return false;
         })
     })
 </script>

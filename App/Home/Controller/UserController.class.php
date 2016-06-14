@@ -246,7 +246,42 @@ class UserController extends Controller
      * 代理
      */
     public function agent(){
+        //检查是不是代理
+        $uInfo = M('user')->where(array('uid'=>session('uid')))->field('agent,leader')->find();
+        if($uInfo['agent']==1){//自己是代理
+            //统计自己团队有多少人
+            $map['leader'] = session('uid');
+            $num = $this->getCount('user',$map);
+            $this->assign('num',$num);
+            $this->display('agentOk');
+        }else{//自己不是代理
+            $con = S('ApplyTeam');
+            $map['vip'] = array('egt',$con['price']);
+            $map['up1'] = session('uid');
+            $num = $this->getCount('user',$map);
+            $this->assign('con',$con);
+            $this->assign('num',$num);
+            $this->display('agentNo');
+        }
+    }
 
+    /**
+     * 升级代理申请
+     */
+    public function setApply(){
+        $uid = session('uid');
+        $con = S('ApplyTeam');
+        $map['vip'] = array('egt',$con['price']);
+        $map['up1'] = $uid;
+        $num = $this->getCount('user',$map);
+        if($num<$con['num']){
+            $this->error('你的推荐会员数量不够');die;
+        }else{
+            $data['uid'] = $data['leader'] = $uid;
+            $data['agent'] = 1;
+            M('user')->save($data);
+            $this->success('操作成功');
+        }
     }
 
     /**
