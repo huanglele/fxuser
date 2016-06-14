@@ -20,7 +20,7 @@
             <div class="mui-input-row">
                 <input class="form-control" placeholder="余额<{$uMoney}>,最低提现<{$CashRate.money}>" name="money" type="text" >
             </div>
-            <button type="submit" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 0;">马上提现</button>
+            <button type="button" onclick="postCheck()" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 0;">马上提现</button>
         </form>
     </div>
 
@@ -55,28 +55,28 @@
 
     $(window).ready(function(){
 
-        $('#getCash').submit(function(){
-            var v = $('input[name="money"]').val();
-            if(isNaN(v)){
-                mui.toast('请填写正常的金额');return false;
-            }
-            if(v<limit){
-                mui.toast('不能低于最低提现金额');return false;
-            }
-            if(v>uMoney){
-                mui.toast('提现金额高于账户余额');return false;
-            }
-            var btnArray = ['是', '否'];
-            mui.confirm('提现将扣除'+rate+'%的手续费，确认？', '提现', btnArray, function(e) {
-                if (e.index == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            })
-            return false;
-        })
     })
+
+    postCheck = function(){
+        var v = $('input[name="money"]').val();
+        if(isNaN(v)){
+            mui.toast('请填写正常的金额');return false;
+        }
+        if(v<limit){
+            mui.toast('不能低于最低提现金额');return false;
+        }
+        if(v>uMoney){
+            mui.toast('提现金额高于账户余额');return false;
+        }
+        var btnArray = ['是', '否'];
+        mui.confirm('提现将扣除'+rate+'%的手续费，确认？', '提现', btnArray, function(e) {
+            if (e.index == 0) {
+                $('#getCash').submit();
+            } else {
+                return false;
+            }
+        })
+    }
 
 
 </script>
