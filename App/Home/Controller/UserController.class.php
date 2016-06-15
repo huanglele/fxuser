@@ -369,7 +369,6 @@ class UserController extends Controller
      * 红包内页
      */
     public function packDetail(){
-        print_r($_SERVER);die;
         $id = I('get.id');
         $map['rid'] = $id;
         $map['uid'] = session('uid');

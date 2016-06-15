@@ -59,7 +59,7 @@ function onBuyEvent($oid){
 
     $d1['openid'] = $uInfo['openid'];
     $rid = $M->add($d1);
-    $dl['rid'] = $rid;
+    $d1['rid'] = $rid;
    sendWxPackMsg($d1);
     if($uInfo['up1']){
         //给直接上级
@@ -74,7 +74,7 @@ function onBuyEvent($oid){
 
         //获取用户的openid
         $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up1']))->getField('openid');
-        $dl['rid'] = $rid;
+        $d1['rid'] = $rid;
         sendWxPackMsg($d1);
     }
     if($uInfo['up2']){
@@ -89,7 +89,7 @@ function onBuyEvent($oid){
         $rid = $M->add($d1);
 
         $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up2']))->getField('openid');
-        $dl['rid'] = $rid;
+        $d1['rid'] = $rid;
         sendWxPackMsg($d1);
     }
     if($uInfo['agent']){
@@ -104,7 +104,7 @@ function onBuyEvent($oid){
         $rid = $M->add($d1);
 
         $d1['openid'] = M('user')->where(array('uid'=>$uInfo['leader']))->getField('openid');
-        $dl['rid'] = $rid;
+        $d1['rid'] = $rid;
         sendWxPackMsg($d1);
     }
 }
