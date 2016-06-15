@@ -19,7 +19,7 @@
         <volist name="list" id="vo">
             <li class="mui-table-view-cell mui-media mui-collapse">
                 <a class="mui-navigate-right">
-                    <{$vo.money}>-<small><{$Status[$vo['status']]}></small>
+                    <{$vo.note}>-<small><{$Status[$vo['status']]}></small>
                 </a>
                 <ul class="mui-table-view mui-table-view-chevron">
                     <li class="mui-table-view-cell">
@@ -27,6 +27,7 @@
                         <eq name="vo.status" value="1"><a class="mui-btn mui-btn-primary" href="<{:U('user/packDetail')}>?id=<{$vo.rid}>">领取</a></eq>
                     </li>
                     <li class="mui-table-view-cell">时间：<{$vo.time|Mydate}></li>
+                    <li class="mui-table-view-cell">金额：<{$vo.money}></li>
                     <li class="mui-table-view-cell">领取等级：<{$VipMap[$vo['price']]}></li>
                     <li class="mui-table-view-cell"><{$vo.note}></li>
 

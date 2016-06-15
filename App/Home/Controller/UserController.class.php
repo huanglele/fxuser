@@ -26,6 +26,13 @@ class UserController extends Controller
         $this->assign('info',$info);
         $this->assign('VipMap',S('VipMap'));
 
+        //查询推荐人
+        if($info['up1']){
+            $info['tuijian'] = M('user')->where(array('uid'=>$info['up1']))->getField('nickname');
+        }else{
+            $info['tuijian'] = '无';
+        }
+
         $mapUser['up1|up2'] = session('uid');
         $this->assign('team',$this->getCount('user',$mapUser));
 
@@ -59,6 +66,8 @@ class UserController extends Controller
         $data = array_merge($info,$wxInfo);
 
         session('openid',$openId);
+        //写入关注时间
+        session('subscribe_time',$data['subscribe_time']);
 
         if(isset($data['headimgurl'])){
             $data['headimgurl'] = trim($data['headimgurl'],'0').'64';
