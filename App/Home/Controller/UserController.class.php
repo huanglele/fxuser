@@ -234,14 +234,30 @@ class UserController extends Controller
         if($num<$con['num']){
             $this->error('你的推荐会员数量不够');die;
         }else{
+            $uInfo = M('user')->where(array('uid'=>$uid))->field('nickname,money,agent,leader')->find();
+            if($uInfo['agent']){$this->error('你已经是代理了',U('user/index'));die;}
             //查询账户余额
-            $leftMoney = M('user')->where(array('uid'=>$uid))->getField('money');
+            $leftMoney = $uInfo['money'];
             if($leftMoney<$con['money']){$this->error('账户余额不足',U('user/pay'));die;}
             $data['uid'] = $data['leader'] = $uid;
             $data['agent'] = 1;
             $data['money'] = $leftMoney-$con['money'];
             session('agent',1);
             M('user')->save($data);
+            if($uInfo['leader']){   //给之前的代理发红包
+                $d1['money'] = $con['leader'];
+                $d1['note'] = '来自'.$uInfo['nickname'].'的升级代理红包';
+                $d1['type'] = 5;
+                $d1['time'] = time();
+                $d1['uid'] = $uInfo['leader'];
+                $d1['status'] = 1;
+                $d1['price'] = 0;
+                $rid = M('reward')->add($d1);
+
+                $d1['openid'] = M('user')->where(array('uid'=>$uInfo['leader']))->getField('openid');
+                $dl['rid'] = $rid;
+                sendWxPackMsg($d1);
+            }
             $this->success('操作成功');
         }
     }
