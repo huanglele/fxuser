@@ -132,7 +132,7 @@ class UserController extends Controller
                 $data['body'] = '充值';
                 $data['attach'] = '充值';
                 $data['money'] = $gInfo['price'];
-                $data['status'] = 2;
+                $data['status'] = 1;
                 $oid = M('order')->add($data);
                 $data['oid'] = $oid;
                 $this->sendPayData($data);

@@ -83,6 +83,11 @@ class IndexController extends Controller
         session('openid',$info['openid']);
     }
 
+    public function t(){
+        $id = 12;
+        echo U('user/packDetail','id='.$id,'',true);
+    }
+
     public function city()
     {
         $prov = array();

@@ -172,7 +172,7 @@ function sendOrderTempMsg($oid){
 function sendPackTempMsg($r){
     $data['touser'] = $r['openid'];
     $data['template_id'] = 'xi33bic9in_xajYNvNChvOsWy7zMDDuRULX5xDHNhg0';
-    $data['url'] = U('user/packDetail',array('id'=>$r['rid']),true,true);
+    $data['url'] = U("user/packDetail",'id='.$r['rid'],'',true);
     $arr['first'] = array('value'=>'您好,您收到了一个红包','color'=>'#173177');
     $arr['tradeDateTime'] = array('value'=>date('Y-m-d H:i',$r['time']),'color'=>'#173177');
     $arr['orderType'] = array('value'=>$r['type'],'color'=>'#173177');
