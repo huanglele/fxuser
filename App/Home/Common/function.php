@@ -50,7 +50,7 @@ function onBuyEvent($oid){
 
     //给自己发红包
     $d1['money'] = $gInfo['self'];
-    $d1['note'] = '购买'.$gInfo['title'];
+    $d1['note'] = $uInfo['nickname'].'购买'.$gInfo['title'];
     $d1['type'] = 1;
     $d1['time'] = time();
     $d1['uid'] = $oInfo['uid'];

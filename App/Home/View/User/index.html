@@ -60,10 +60,10 @@
     </div>
     <div class="info-score">
         <h4><{$info.nickname}> - <{$VipMap[$info['vip']]}></h4>
-        <h5>
+        <h5 style="color: #f0ff00">
             <{$info.uid}>号会员
             <gt name="Think.session.subscribe_time"><{$Think.session.subscribe_time|Mydate}>关注<else />未关注</gt>
-            推荐人:<{$info['tuijian']}>
+            推荐人:<{$info.tuijian}>
         </h5>
     </div>
 </div>

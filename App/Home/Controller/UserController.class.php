@@ -23,7 +23,6 @@ class UserController extends Controller
     public function index(){
         $uid = session('uid');
         $info = M('user')->find($uid);
-        $this->assign('info',$info);
         $this->assign('VipMap',S('VipMap'));
 
         //查询推荐人
@@ -32,6 +31,7 @@ class UserController extends Controller
         }else{
             $info['tuijian'] = '无';
         }
+        $this->assign('info',$info);
 
         $mapUser['up1|up2'] = session('uid');
         $this->assign('team',$this->getCount('user',$mapUser));
