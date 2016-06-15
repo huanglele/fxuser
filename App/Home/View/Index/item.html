@@ -177,7 +177,7 @@
         }
     </style>
 </head>
-<body class="mui-fullscreen">
+<body>
 <!--页面主结构开始-->
 <div id="app" class="mui-views">
     <div class="mui-view">
@@ -254,7 +254,7 @@
                 </div>
             </div>
             <input type="hidden" name="gid" value="<{$info.gid}>">
-            <button type="submit" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 0;">下单</button>
+            <button type="submit" class="mui-btn mui-btn-danger mui-btn-block" style="margin-top:10px;padding: 5px 0;">下单</button>
         </form>
     </div>
 </div>
@@ -329,7 +329,7 @@
     createSheng = function(){
         var op = '';
         $.each(city,function(i,n){
-            op += '<option value="'+ i.value+'">'+ n.text+'</option>';
+            op += '<option value="'+ n.value+'">'+ n.text+'</option>';
         })
         $('select[name="sheng"]').html(op);
         createShi();
