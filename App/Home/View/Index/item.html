@@ -168,7 +168,7 @@
             color: #333;
         }
         .info{
-            height: 40px;
+            height: 60px;
             border-bottom: 1px solid beige;
         }
         p img {
@@ -199,9 +199,10 @@
         <p style="text-align: center">
             <img src="__ROOT__/upload/<{$info.img}>" style="width: 100%">
         </p>
-        <h3><{$VipName}></h3>
+        <h3><{$info.title}></h3>
         <div class="mui-content-padded info">
             <div class="mui-pull-left">
+                <h4>等级:<span style="color:red"><{$VipName}></span></h4>
                 <h4>价格:<span style="color:red"><{$info.price}></span></h4>
             </div>
             <div class="mui-pull-right">
@@ -240,6 +241,17 @@
             <p>详细地址</p>
             <div class="row mui-input-row">
                 <textarea name="addr" class="mui-input-clear question" placeholder="请详填写收货地址"></textarea>
+            </div>
+            <p>支付方式</p>
+            <div class="mui-input-group">
+                <div class="mui-input-row mui-radio mui-left">
+                    <label>微信支付</label>
+                    <input name="type" checked="checked" type="radio" value="wx">
+                </div>
+                <div class="mui-input-row mui-radio mui-left">
+                    <label>余额支付</label>
+                    <input name="type" type="radio" value="money">
+                </div>
             </div>
             <input type="hidden" name="gid" value="<{$info.gid}>">
             <button type="submit" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 0;">下单</button>

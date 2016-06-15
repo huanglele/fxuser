@@ -11,10 +11,10 @@
         </div>
         <div class="col-xs-5">
             <div class="form-group">
-                <label class="sr-only" for="name">商品名</label>
+                <label class="sr-only" for="name">等级名称</label>
                 <div class="input-group">
-                    <div class="input-group-addon">商品名</div>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="填写商品名" value="<{$name}>">
+                    <div class="input-group-addon">等级名称</div>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="填写等级名称" value="<{$name}>">
                 </div>
             </div>
         </div>
@@ -45,7 +45,8 @@
             <thead>
             <tr>
                 <th>商品ID</th>
-                <th>商品名</th>
+                <th>标题</th>
+                <th>等级名称</th>
                 <th>状态</th>
                 <th>价格</th>
                 <th>操作</th>
@@ -55,6 +56,7 @@
             <volist name="list" id="vo">
                 <tr>
                     <td><{$vo.gid}></td>
+                    <td><{$vo.title}></td>
                     <td><{$vo.name}></td>
                     <td><{$GoodsStatus[$vo['status']]}></td>
                     <td><{$vo.price}></td>

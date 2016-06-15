@@ -63,7 +63,7 @@ class UserController extends Controller
         if(isset($data['headimgurl'])){
             $data['headimgurl'] = trim($data['headimgurl'],'0').'64';
         }
-        $uInfo = $M->where(array('openid'=>$openId))->field('uid')->find();
+        $uInfo = $M->where(array('openid'=>$openId))->field('uid,agent')->find();
         $uid = $uInfo['uid'];
         $jump = session('jump');
         if(!$jump){
@@ -72,6 +72,7 @@ class UserController extends Controller
         session('jump',null);
         if($uid){
             session('uid',$uid);
+            session('agent',$uInfo['agent']);
             $this->redirect($jump);
         }else{
             //第一次登录 添加到用户表里面
@@ -79,6 +80,7 @@ class UserController extends Controller
             $r = $M->add($data);
             if($r){
                 session('uid',$r);
+                session('agent',0);
                 $this->redirect($jump);
             }
         }
@@ -90,7 +92,7 @@ class UserController extends Controller
         $patten = "/^http:\/\/$host(\/index.php)?(.*)$/i";
         if(preg_match($patten,$referer,$arr)){
             $uri = $arr[2];
-            if(!preg_match('/^user\/(.{0,3})login',$uri)){
+            if(!preg_match("/user\/login/i",$uri)){
                 session('jump',$referer);
             }
         }
@@ -107,106 +109,61 @@ class UserController extends Controller
             $data = $_POST;
             //查询账户里面的钱够不够
             $uInfo = M('user')->where(array('uid'=>$uid))->field('up1,up2,leader,agent,money,openid')->find();
-            if($uInfo['money']<$gInfo['price']){$this->error('账户余额不足',U('user/pay'));die;}
-            //扣钱 添加订单记录  发送红包
-            $da1['uid'] = $uid;
-            $da1['money'] = $uInfo['money']-$gInfo['price'];
-            if($da1['vip']<$gInfo['price']) $da1['vip'] = $gInfo['price'];
-            M('user')->save($da1);
-
             $data['uid'] = $uid;
             $data['time'] = time();
             $data['money'] = $gInfo['price'];
-            $data['status'] = 2;
-            $oid = M('order')->add($data);
 
-            $allData = array();
-            //给自己发红包
-            $d1['money'] = $gInfo['self'];
-            $d1['note'] = '自己的升级红包';
-            $d1['type'] = 1;
-            $d1['time'] = time();
-            $d1['uid'] = $uid;
-            $d1['status'] = 1;
-            $d1['price'] = $gInfo['price'];
-            $allData[] = $d1;
-            $d1['openid'] = $uInfo['openid'];
-            $this->sendWxPackMsg($d1);
-            if($uInfo['up1']){
-                //给直接上级
-                $d1['money'] = $gInfo['up1'];
-                $d1['note'] = '来自'.$uid.'的升级红包';
-                $d1['type'] = 2;
-                $d1['time'] = time();
-                $d1['uid'] = $uInfo['up1'];
-                $d1['status'] = 1;
-                $d1['price'] = $gInfo['price'];
-                $allData[] = $d1;
-                //获取用户的openid
-                $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up1']))->getField('openid');
-                $this->sendWxPackMsg($d1);
+            //判断支付方式
+            $type = I('post.type');
+            if($type=='money'){     //余额支付
+                if($uInfo['money']<$gInfo['price']){$this->error('账户余额不足',U('user/pay'));die;}
+                //扣钱 添加订单记录  发送红包
+                $da1['uid'] = $uid;
+                $da1['money'] = $uInfo['money']-$gInfo['price'];
+                if($da1['vip']<$gInfo['price']) $da1['vip'] = $gInfo['price'];
+                M('user')->save($da1);
+                $data['status'] = 2;
+                $oid = M('order')->add($data);      //添加订单记录
+                onBuyEvent($oid);   //发送红包
+                sendOrderTempMsg($oid);
+                $this->success('购买成功',U('user/index'));
+            }else{      //微信支付
+                $data['uid'] = $uid;
+                $data['body'] = '充值';
+                $data['attach'] = '充值';
+                $data['money'] = $gInfo['price'];
+                $data['status'] = 2;
+                $oid = M('order')->add($data);
+                $data['oid'] = $oid;
+                $this->sendPayData($data);
             }
-            if($uInfo['up2']){
-                //给直接上级
-                $d1['money'] = $gInfo['up2'];
-                $d1['note'] = '来自'.$uid.'的升级红包';
-                $d1['type'] = 3;
-                $d1['time'] = time();
-                $d1['uid'] = $uInfo['up2'];
-                $d1['status'] = 1;
-                $d1['price'] = $gInfo['price'];
-                $allData[] = $d1;
-                $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up1']))->getField('openid');
-                $this->sendWxPackMsg($d1);
-            }
-            if($uInfo['agent']){
-                //给leader发红包
-                $d1['money'] = $gInfo['leader'];
-                $d1['note'] = '来自'.$uid.'的升级红包';
-                $d1['type'] = 4;
-                $d1['time'] = time();
-                $d1['uid'] = $uInfo['agent'];
-                $d1['status'] = 1;
-                $d1['price'] = $gInfo['price'];
-                $allData[] = $d1;
-                $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up1']))->getField('openid');
-                $this->sendWxPackMsg($d1);
-            }
-            M('reward')->addAll($allData);
-            sendOrderTempMsg($oid);
-            $this->success('购买成功',U('user/index'));
         }else{
             $this->error('商品不存在');
         }
     }
 
-    /**
-     * 发送领取红包红包消息
-     * @param $data
-     */
-    private function sendWxPackMsg($data){
-        $Type = C('RewardType');
-        $data['type'] = $Type[$data['type']];
-        sendPackTempMsg($data);
-    }
 
     /**
      * 我的资料
      */
     public function self(){
         $uid = session('uid');
+        //个体信息
         $info = M('user')->find($uid);
         $this->assign('info',$info);
         $this->assign('VipMap',S('VipMap'));
 
+        //查看自己的leader
         $mapUser['up1|up2'] = session('uid');
         $this->assign('team',$this->getCount('user',$mapUser));
 
+        //统计红包
         $mapR['uid'] = session('uid');
         $this->assign('Pack',$this->getCount('reward',$mapR));
         $mapR['status'] = 1;
         $this->assign('PackL',$this->getCount('reward',$mapR));
 
+        //统计下属
         $mapUp1['up1'] = session('uid');
         $this->assign('up1',$this->getCount('user',$mapUp1));
         $mapUp2['up2'] = session('uid');
@@ -277,21 +234,26 @@ class UserController extends Controller
         if($num<$con['num']){
             $this->error('你的推荐会员数量不够');die;
         }else{
+            //查询账户余额
+            $leftMoney = M('user')->where(array('uid'=>$uid))->getField('money');
+            if($leftMoney<$con['money']){$this->error('账户余额不足',U('user/pay'));die;}
             $data['uid'] = $data['leader'] = $uid;
             $data['agent'] = 1;
+            $data['money'] = $leftMoney-$con['money'];
+            session('agent',1);
             M('user')->save($data);
             $this->success('操作成功');
         }
     }
 
     /**
-     * 我的团队
+     * 我的下属
      */
     public function team(){
         $this->display('team');
     }
     /**
-     * 获取团队信息
+     * 获取我的下属信息
      */
     public function getTeamList(){
         $p = I('p',1,'number_int');
@@ -316,6 +278,41 @@ class UserController extends Controller
         $ret['page'] = $p;
         $this->ajaxReturn($ret);
     }
+
+    /**
+     * 我的团队
+     */
+    public function group(){
+        //先判断自己是不是leader
+        $agent = session('agent');
+        if($agent){
+            $this->display('group');
+        }else{
+            $this->error('你还不是代理',U('user/agent'));
+        }
+    }
+    /**
+     * 获取我的下属信息
+     */
+    public function getGroupList(){
+        $p = I('p',1,'number_int');
+        $map['leader'] = session('uid');
+        $list = $this->getData('user',$map,'uid desc','nickname,headimgurl,vip');
+        $num = count($list);
+        if($num){
+            $VipMap = S('VipMap');
+            for($i=0;$i<$num;$i++){
+                $list[$i]['vip'] = $VipMap[$list[$i]['vip']];
+            }
+        }
+        $ret['status'] = 'success';
+        $ret['num'] = $num;
+        $ret['list'] = $list;
+        if($num==10)  $p++;
+        $ret['page'] = $p;
+        $this->ajaxReturn($ret);
+    }
+
 
     /**
      * 我的订单
@@ -402,35 +399,45 @@ class UserController extends Controller
             $money = I('post.money',0);
             $uid = session('uid');
             if($money>0){
-                $body = '充值';
-                $attach = '充值';
-                $tag = $uid;
-                $trade_no = createTradeNum();
-                $openId = session('openid');
-                $Pay = A('Wechat');
-                $order = $Pay->pay($openId,$body,$attach,$trade_no,$money*100,$tag);
-                if($order['result_code']=='SUCCESS'){//生成订单信息成功
-                    $data['uid'] = $uid;
-                    $data['create_time'] = date('Y-m-d H:i:s');
-                    $data['money'] = $money;
-                    $data['pid'] = $trade_no;
-                    $data['status'] = 1;
-                    $data['pay_time'] = 0;
-                    if(M('pay')->add($data)){
-                        $this->assign('money',$money);
-                        $this->display('paySub');die;
-                    }else{
-                        $this->error('操作失败请重试');die;
-                    }
-                }else{
-                    $this->error('操作失败请重试');die;
-                }
+                $data['uid'] = $uid;
+                $data['body'] = '充值';
+                $data['attach'] = '充值';
+                $data['money'] = $money;
+                $data['oid'] = 0;
+                $this->sendPayData($data);
             }else{
                 $this->error('输入金额有误');
             }
         }else{
             $this->getData('pay',array('uid'=>session('uid'),'status'=>2),'pid desc');
             $this->display('pay');
+        }
+    }
+
+    private function sendPayData($da){
+        $body = $da['body'];
+        $attach = $da['attach'];
+        $tag = $da['uid'];
+        $trade_no = createTradeNum();
+        $openId = session('openid');
+        $Pay = A('Wechat');
+        $order = $Pay->pay($openId,$body,$attach,$trade_no,intval($da['money']*100),$tag);
+        if($order['result_code']=='SUCCESS'){//生成订单信息成功
+            $data['uid'] = $da['uid'];
+            $data['oid'] = $da['oid'];
+            $data['create_time'] = date('Y-m-d H:i:s');
+            $data['money'] = $da['money'];
+            $data['pid'] = $trade_no;
+            $data['status'] = 1;
+            $data['pay_time'] = 0;
+            if(M('pay')->add($data)){
+                $this->assign('money',$da['money']);
+                $this->display('user/paySub');die;
+            }else{
+                $this->error('操作失败请重试');die;
+            }
+        }else{
+            $this->error('操作失败请重试');die;
         }
     }
 

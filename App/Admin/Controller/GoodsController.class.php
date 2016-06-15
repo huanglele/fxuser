@@ -40,7 +40,7 @@ class GoodsController extends CommonController
         $count = $M->where($map)->count();
         $Page = new \Think\Page($count,25);
         $show = $Page->show();
-        $list = $M->where($map)->field('gid,name,price,status')->order('gid desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+        $list = $M->where($map)->field('gid,title,name,price,status')->order('gid desc')->limit($Page->firstRow.','.$Page->listRows)->select();
         $this->assign('page',$show);
         $this->assign('GoodsStatus',C('GoodsStatus'));
         $this->assign('list',$list);

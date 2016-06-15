@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>我的下属</title>
+    <title>我的团队</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -20,20 +20,9 @@
 <body>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">我的下属</h1>
+    <h1 class="mui-title">我的团队</h1>
 </header>
 <div class="mui-content">
-
-    <div style="padding: 10px 10px;">
-        <div id="segmentedControl" class="mui-segmented-control mui-segmented-control-primary">
-            <a class="mui-control-item mui-active" data-type="up1">
-                直属
-            </a>
-            <a class="mui-control-item" data-type="up2">
-                间接
-            </a>
-        </div>
-    </div>
 
     <ul id="taskList" class="mui-table-view"></ul>
 
@@ -48,13 +37,7 @@
     var hasMore = true;
     var type = 'up1';
     $(window).ready(function(){
-        $('.mui-control-item').on('tap',function(){
-            page = 1;hasMore = true;
-            $('#getDataTip').html('');
-            $('#taskList').html('');
-            type = $(this).attr('data-type');
-            getTaskList();
-        });
+
         getTaskList();
 
         $(window).scroll(function(){
@@ -70,10 +53,9 @@
     function getTaskList(){
         if(hasMore){
             $.ajax({
-                url:"<{:U('user/getTeamList')}>",
+                url:"<{:U('user/getGroupList')}>",
                 data:{
-                    p:page,
-                    type:type
+                    p:page
                 },
                 beforeSend:function(){
                     $('#getDataTip').html('<span class="mui-spinner"></span>')

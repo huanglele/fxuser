@@ -15,6 +15,12 @@
             margin-top:8px;
             color: #333;
         }
+        .mui-table-view .mui-media-object{
+            width: 60px;
+            line-height: 42px;
+            max-width: 60px;
+            height: 60px;
+        }
     </style>
 </head>
 
@@ -24,12 +30,16 @@
     <h1 class="mui-title">所有会员</h1>
 </header>
 <div class="mui-content" style="background-color:#fff">
-    <ul class="mui-table-view mui-grid-view">
+    <ul class="mui-table-view">
         <volist name="list" id="vo">
-            <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <li class="mui-table-view-cell mui-media">
                 <a href="<{:U('index/item')}>?id=<{$vo.gid}>">
-                    <img class="mui-media-object" src="__ROOT__/upload/<{$vo.img}>">
-                    <div class="mui-media-body"><{$VipMap[$vo['price']]}></div></a></li>
+                    <img class="mui-media-object mui-pull-left" src="__ROOT__/upload/<{$vo.img}>">
+                    <div class="mui-media-body">
+                        <{$VipMap[$vo['price']]}>
+                        <p><{$vo.title}></p>
+                        <p><{$vo.price}></p>
+                    </div></a></li>
         </volist>
     </ul>
 </div>

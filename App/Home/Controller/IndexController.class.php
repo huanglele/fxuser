@@ -22,7 +22,7 @@ class IndexController extends Controller
 
     public function goods(){
         $map['status'] = 1;
-        $list = M('goods')->where($map)->order('price asc')->field('gid,name,img,price')->select();
+        $list = M('goods')->where($map)->order('price asc')->field('gid,title,name,img,price')->select();
 //        var_dump($list);
         $this->assign('list',$list);
         $this->assign('VipMap',S('VipMap'));
@@ -83,7 +83,7 @@ class IndexController extends Controller
         session('openid',$info['openid']);
     }
 
-    public function test()
+    public function city()
     {
         $prov = array();
         $prov[12] = '12-B 北京-12';
@@ -233,6 +233,10 @@ class IndexController extends Controller
 ////        var_dump($allQx);
 ////        die;
         echo json_encode($data);
+    }
+
+    public function test(){
+
     }
 
 }
