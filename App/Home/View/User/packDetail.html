@@ -8,9 +8,44 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="__PUBLIC__/css/mui.min.css">
     <style>
-        .box{
-            background: url("__PUBLIC__/images/hongbaobeijing.png");
+        .pack{
+            display: block;
+            padding-left: 20px;
+            padding-right: 10px;
+            position: relative;
         }
+        .pack{
+            margin-top: 30px;
+        }
+        .box{background: #fff;}
+        .box img{
+            max-width:100%;
+            position: relative;
+        }
+        .box .note{
+            position: absolute;  width: 65%;top:5px;right: 15px;
+            color: #FFF;
+        }
+        .type{
+            position: relative;top:0px;
+            color:#999;
+            height: 23px;line-height: 20px;font-size: 14px;text-indent:0.5em;
+            background: #fff;
+        }
+        .wb{
+            height: 20px;
+            float: right;
+        }
+
+        .am-share { font-size: 14px; border-radius: 0; bottom: 0; left: 0; position: fixed; text-align: center; -webkit-transform: translateY(100%); -ms-transform: translateY(100%); transform: translateY(100%); -webkit-transition: -webkit-transform 300ms; transition: transform 300ms ; width: 100%; z-index: 1110; }
+        .am-modal-active { transform: translateY(0px);  -webkit-transform: translateY(0); -ms-transform: translateY(0); transform: translateY(0) }
+        .am-modal-out { z-index: 1109; -webkit-transform: translateY(100%); -ms-transform: translateY(100%); transform: translateY(100%) }
+
+        .yuan{ width:100px; height:100px; line-height:100px; font-size:18px; border-radius:50%; background-color:#feaa3a; color:#FFF;}
+        .share_btn { color: #7f3325;  display: block;  cursor: pointer;  font-size: 24px; font-weight: bold;  }
+
+        .sharebg { background-color: rgba(0, 0, 0, 0.6); bottom: 0; height: 100%; left: 0; opacity: 0; position: fixed; right: 0; top: 0; width: 100%; z-index: 1100; display:none; }
+        .sharebg-active { opacity: 1; display:block; }
     </style>
 </head>
 <body>
@@ -19,35 +54,59 @@
     <h1 class="mui-title">领取红包</h1>
 </header>
 <div class="mui-content">
-    <div class="box">
 
+    <div class="pack" onClick="toshare()">
+        <div class="box">
+            <img src="__PUBLIC__/images/hongbaobeijing.png">
+            <div class="note">
+                <h4 style="margin-top: 10px"><{$info.note}></h4>
+            </div>
+            <div class="type">
+                <{$Type[$info['type']]}>
+                <img class="wb" src="__PUBLIC__/images/wb.png" />
+            </div>
+        </div>
     </div>
-    <ul class="mui-table-view mui-table-view-chevron">
-        <volist name="list" id="vo">
-            <li class="mui-table-view-cell mui-media mui-collapse">
-                <a class="mui-navigate-right">
-                    <{$info.money}>-<small><{$Status[$info['status']]}></small>
-                </a>
-                
-            </li>
-        </volist>
-    </ul>
-    <ul class="mui-table-view">
-        <li class="mui-table-view-cell">
-            类型：<{$Type[$info['type']]}>
-            <eq name="vo.status" value="1"><a class="mui-btn mui-btn-primary" href="<{:U('user/openRedPack')}>?id=<{$info.rid}>">领取</a></eq>
-        </li>
-        <li class="mui-table-view-cell">时间：<{$info.time|Mydate}></li>
-        <li class="mui-table-view-cell">领取等级：<{$VipMap[$info['price']]}></li>
-        <li class="mui-table-view-cell"><{$info.note}></li>
 
-    </ul>
+
+    <div class="am-share">
+        <table border="0" width="90%" cellpadding="0" cellspacing="0" style="margin:0px auto; margin-top:40px; background:#be4e3a;border-radius:10px 10px 0px 0px; color:#FFF; font-size:16px;text-align:center">
+            <tr><td height="40" align="right" style="padding-right:5%"><a class="share_btn">×</a></td></tr>
+            <tr><td ><img src="<{$uInfo.headimgurl}>" width="81" height="80" style=" border-radius:50%;"></td></tr>
+            <tr><td height="30" >&nbsp;</td></tr>
+            <tr><td><font size="+1"> <{$info.money}>￥</font></td></tr>
+            <tr><td height="20" >&nbsp;</td></tr>
+            <tr><td align="center" height="100" style="background:#a24536; background-size:100%;padding-top: 30px;">
+                <a href="<{:U('user/openRedPack')}>?id=<{$info.rid}>" ><div class="yuan">拆红包</div></a></td></tr>
+        </table>
+        <table border="0" width="90%" style="margin:0px auto; background:#a24536; margin-bottom:40px; border-radius:0px 0px 10px 10px; color:#FFF; font-size:16px;text-align:center">
+            <tr><td height="50" >&nbsp;</td></tr>
+        </table>
+    </div>
 </div>
 </body>
 <script src="__PUBLIC__/js/mui.min.js"></script>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
 <script>
     mui.init({
         swipeBack:true //启用右滑关闭功能
     });
+
+    function toshare(){
+        $(".am-share").addClass("am-modal-active");
+        if($(".sharebg").length>0){
+            $(".sharebg").addClass("sharebg-active");
+        }else{
+            $("body").append('<div class="sharebg"></div>');
+            $(".sharebg").addClass("sharebg-active");
+        }
+        $(".sharebg-active,.share_btn").click(function(){
+            $(".am-share").removeClass("am-modal-active");
+            setTimeout(function(){
+                $(".sharebg-active").removeClass("sharebg-active");
+                $(".sharebg").remove();
+            },300);
+        })
+    }
 </script>
 </html>

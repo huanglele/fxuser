@@ -358,11 +358,17 @@ class UserController extends Controller
         $map['uid'] = session('uid');
         $info = M('reward')->where($map)->find();
         if($info){
-            $this->getData('reward',$map,'rid desc');
-            $this->assign('Status',C('RewardStatus'));
-            $this->assign('Type',C('RewardType'));
-            $this->assign('VipMap',S('VipMap'));
-            $this->display('packDetail');
+            if($info['status']=='1') {
+                $uInfo = M('user')->field('nickname,headimgurl')->find(session('uid'));
+                $this->assign('uInfo',$uInfo);
+                $this->assign('Status', C('RewardStatus'));
+                $this->assign('info', $info);
+                $this->assign('Type', C('RewardType'));
+                $this->assign('VipMap', S('VipMap'));
+                $this->display('packDetail');
+            }else{
+                $this->error('红包已领取过',U('user/index'));
+            }
         }else{
             $this->error('红包不存在',U('user/index'));
         }
