@@ -33,7 +33,7 @@ return array(
     ),
 
     'Wechat' => array(
-        'welcome' => '欢迎关注我们',
+        'welcome' => '欢迎关注我们',	//公众号自动回复消息
     ),
 
     //上传配置
