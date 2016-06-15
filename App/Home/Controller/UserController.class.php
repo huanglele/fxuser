@@ -67,13 +67,13 @@ class UserController extends Controller
         $uid = $uInfo['uid'];
         $jump = session('jump');
         if(!$jump){
-            $jump = 'user/index';
+            $jump = U('user/index');
         }
         session('jump',null);
         if($uid){
             session('uid',$uid);
             session('agent',$uInfo['agent']);
-            $this->redirect($jump);
+            header("Location:$jump");
         }else{
             //第一次登录 添加到用户表里面
             $data['money'] = $data['vip'] = $data['leader'] = $data['agent'] = $data['up1'] = $data['up2'] = 0;
@@ -81,7 +81,7 @@ class UserController extends Controller
             if($r){
                 session('uid',$r);
                 session('agent',0);
-                $this->redirect($jump);
+                header("Location:$jump");
             }
         }
     }

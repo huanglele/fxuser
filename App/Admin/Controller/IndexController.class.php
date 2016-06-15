@@ -23,10 +23,6 @@ class IndexController extends CommonController {
         $this->display('index');
     }
 
-    public function t(){
-        echo 'http://'.$_SERVER['HTTP_HOST'].__ROOT__.'/Public/images/hb.jpg';
-    }
-
     /**
      * 修改自己的密码
      */
