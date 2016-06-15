@@ -30,6 +30,24 @@ class UserController extends CommonController
         }
         $this->assign('name',$name);
 
+        $up1 = I('get.up1');
+        if($up1){
+            $map['up1'] = $up1;
+        }
+        $this->assign('up1',$up1);
+
+        $up2 = I('get.up2');
+        if($up2){
+            $map['up2'] = $up2;
+        }
+        $this->assign('up2',$up2);
+
+        $leader = I('get.leader');
+        if($leader){
+            $map['leader'] = $leader;
+        }
+        $this->assign('leader',$leader);
+
         $order = 'uid desc';
         $this->getData('user',$map,$order,'uid,headimgurl,nickname,vip,money');
         $this->assign('Status',C('UserStatue'));
