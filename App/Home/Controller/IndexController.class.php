@@ -241,7 +241,12 @@ class IndexController extends Controller
     }
 
     public function test(){
-
+        $data['rid'] = 1;
+        $data['openid'] = 1;
+        $data['type'] = 1;
+        $data['note'] = 1;
+        $data['money'] = 1;
+        sendPackTempMsg($data);
     }
 
 }
