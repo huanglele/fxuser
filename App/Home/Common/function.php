@@ -63,6 +63,7 @@ function onBuyEvent($oid){
    sendWxPackMsg($d1);
     if($uInfo['up1']){
         //给直接上级
+        unset($d1['rid']);  //清除上级的发送红包
         $d1['money'] = $gInfo['up1'];
         $d1['note'] = '来自'.$uInfo['nickname'].'的升级红包';
         $d1['type'] = 2;
@@ -79,6 +80,7 @@ function onBuyEvent($oid){
     }
     if($uInfo['up2']){
         //给直接上级
+        unset($d1['rid']);  //清除上级的发送红包
         $d1['money'] = $gInfo['up2'];
         $d1['note'] = '来自'.$uInfo['nickname'].'的升级红包';
         $d1['type'] = 3;
@@ -94,6 +96,7 @@ function onBuyEvent($oid){
     }
     if($uInfo['agent']){
         //给leader发红包
+        unset($d1['rid']);  //清除上级的发送红包
         $d1['money'] = $gInfo['leader'];
         $d1['note'] = '来自'.$uInfo['nickname'].'的升级红包';
         $d1['type'] = 4;
