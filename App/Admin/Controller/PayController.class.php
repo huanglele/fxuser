@@ -36,7 +36,7 @@ class PayController extends CommonController{
 
         $order = 'pid desc';
         $this->getData('pay',$map,$order);
-        $this->assign('Status',C('PayStatue'));
+        $this->assign('Status',C('PayStatus'));
 
         $this->display('index');
     }
@@ -96,7 +96,7 @@ class PayController extends CommonController{
         $this->assign('status',$status);
 
         $order = 'pid desc';
-        $this->getData('reward',$map,$order);
+        $this->getData('pack',$map,$order);
         $this->assign('Status',C('PayStatue'));
 
         $this->display('pay');
