@@ -349,6 +349,9 @@ class UserController extends Controller
         $this->display('redpack');
     }
 
+    /**
+     * 红包内页
+     */
     public function packDetail(){
         $id = I('get.id');
         $map['rid'] = $id;

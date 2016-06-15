@@ -98,12 +98,12 @@ function onBuyEvent($oid){
         $d1['note'] = '来自'.$uInfo['nickname'].'的升级红包';
         $d1['type'] = 4;
         $d1['time'] = time();
-        $d1['uid'] = $uInfo['agent'];
+        $d1['uid'] = $uInfo['leader'];
         $d1['status'] = 1;
         $d1['price'] = $gInfo['price'];
         $rid = $M->add($d1);
 
-        $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up1']))->getField('openid');
+        $d1['openid'] = M('user')->where(array('uid'=>$uInfo['leader']))->getField('openid');
         $dl['rid'] = $rid;
         sendWxPackMsg($d1);
     }
