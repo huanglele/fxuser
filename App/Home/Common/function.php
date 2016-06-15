@@ -60,7 +60,7 @@ function onBuyEvent($oid){
     $d1['openid'] = $uInfo['openid'];
     $rid = $M->add($d1);
     $dl['rid'] = $rid;
-    $this->sendWxPackMsg($d1);
+   sendWxPackMsg($d1);
     if($uInfo['up1']){
         //给直接上级
         $d1['money'] = $gInfo['up1'];
@@ -75,7 +75,7 @@ function onBuyEvent($oid){
         //获取用户的openid
         $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up1']))->getField('openid');
         $dl['rid'] = $rid;
-        $this->sendWxPackMsg($d1);
+        sendWxPackMsg($d1);
     }
     if($uInfo['up2']){
         //给直接上级
@@ -90,7 +90,7 @@ function onBuyEvent($oid){
 
         $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up2']))->getField('openid');
         $dl['rid'] = $rid;
-        $this->sendWxPackMsg($d1);
+        sendWxPackMsg($d1);
     }
     if($uInfo['agent']){
         //给leader发红包
@@ -105,7 +105,7 @@ function onBuyEvent($oid){
 
         $d1['openid'] = M('user')->where(array('uid'=>$uInfo['up1']))->getField('openid');
         $dl['rid'] = $rid;
-        $this->sendWxPackMsg($d1);
+        sendWxPackMsg($d1);
     }
 }
 
