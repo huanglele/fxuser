@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="fxuser" uploadOnCheckin="fc9fd224-bdad-4bb2-8132-afc4de2f88da">
+  <component name="PublishConfigData" serverName="fxuser">
     <serverData>
       <paths name="fxuser">
         <serverdata>
@@ -10,6 +10,5 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myUploadOnCheckinName" value="fxuser" />
   </component>
 </project>

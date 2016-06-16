@@ -45,12 +45,14 @@ function createBizPayNum(){
 function onBuyEvent($oid){
     $oInfo = M('order')->where(array('oid'=>$oid))->field('uid,gid')->find();
     $uInfo = M('user')->field('nickname,up1,up2,leader,agent,openid')->find($oInfo['uid']);
-    $gInfo = M('goods')->field('gid,price,self,up1,up2,leader,status')->find($oInfo['gid']);
+    $gInfo = M('goods')->field('gid,title,price,self,up1,up2,leader,status')->find($oInfo['gid']);
     $M = M('reward');
+
+    $note = $uInfo['nickname'].'购买'.$gInfo['title'].'返利红包';
 
     //给自己发红包
     $d1['money'] = $gInfo['self'];
-    $d1['note'] = '自己的升级红包';
+    $d1['note'] = $note;
     $d1['type'] = 1;
     $d1['time'] = time();
     $d1['uid'] = $oInfo['uid'];
@@ -60,12 +62,12 @@ function onBuyEvent($oid){
     $d1['openid'] = $uInfo['openid'];
     $rid = $M->add($d1);
     $d1['rid'] = $rid;
-   sendWxPackMsg($d1);
+    sendWxPackMsg($d1);
     if($uInfo['up1']){
         //给直接上级
         unset($d1['rid']);  //清除上级的发送红包
         $d1['money'] = $gInfo['up1'];
-        $d1['note'] = '来自'.$uInfo['nickname'].'的升级红包';
+        $d1['note'] = $note;
         $d1['type'] = 2;
         $d1['time'] = time();
         $d1['uid'] = $uInfo['up1'];
@@ -82,7 +84,7 @@ function onBuyEvent($oid){
         //给直接上级
         unset($d1['rid']);  //清除上级的发送红包
         $d1['money'] = $gInfo['up2'];
-        $d1['note'] = '来自'.$uInfo['nickname'].'的升级红包';
+        $d1['note'] = $note;
         $d1['type'] = 3;
         $d1['time'] = time();
         $d1['uid'] = $uInfo['up2'];
@@ -98,7 +100,7 @@ function onBuyEvent($oid){
         //给leader发红包
         unset($d1['rid']);  //清除上级的发送红包
         $d1['money'] = $gInfo['leader'];
-        $d1['note'] = '来自'.$uInfo['nickname'].'的升级红包';
+        $d1['note'] = $note;
         $d1['type'] = 4;
         $d1['time'] = time();
         $d1['uid'] = $uInfo['leader'];

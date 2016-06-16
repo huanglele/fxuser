@@ -23,8 +23,15 @@ class UserController extends Controller
     public function index(){
         $uid = session('uid');
         $info = M('user')->find($uid);
-        $this->assign('info',$info);
         $this->assign('VipMap',S('VipMap'));
+
+        //查询推荐人
+        if($info['up1']){
+            $info['tuijian'] = M('user')->where(array('uid'=>$info['up1']))->getField('nickname');
+        }else{
+            $info['tuijian'] = '无';
+        }
+        $this->assign('info',$info);
 
         $mapUser['up1|up2'] = session('uid');
         $this->assign('team',$this->getCount('user',$mapUser));
@@ -59,6 +66,8 @@ class UserController extends Controller
         $data = array_merge($info,$wxInfo);
 
         session('openid',$openId);
+        //写入关注时间
+        session('subscribe_time',$data['subscribe_time']);
 
         if(isset($data['headimgurl'])){
             $data['headimgurl'] = trim($data['headimgurl'],'0').'64';
@@ -108,7 +117,7 @@ class UserController extends Controller
         if($gInfo && $gInfo['status']==1) {
             $data = $_POST;
             //查询账户里面的钱够不够
-            $uInfo = M('user')->where(array('uid'=>$uid))->field('up1,up2,leader,agent,money,openid')->find();
+            $uInfo = M('user')->where(array('uid'=>$uid))->field('up1,up2,leader,agent,money,openid,vip')->find();
             $data['uid'] = $uid;
             $data['time'] = time();
             $data['money'] = $gInfo['price'];
@@ -120,7 +129,7 @@ class UserController extends Controller
                 //扣钱 添加订单记录  发送红包
                 $da1['uid'] = $uid;
                 $da1['money'] = $uInfo['money']-$gInfo['price'];
-                if($da1['vip']<$gInfo['price']) $da1['vip'] = $gInfo['price'];
+                if($uInfo['vip']<$gInfo['price']) $da1['vip'] = $gInfo['price'];  //判断是否修改等级
                 M('user')->save($da1);
                 $data['status'] = 2;
                 $oid = M('order')->add($data);      //添加订单记录
